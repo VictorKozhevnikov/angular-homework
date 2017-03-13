@@ -1,37 +1,50 @@
 <nav class="navbar navbar-default">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Angular Homework</a>
+            <a class="navbar-brand" href="#">Angular Homework</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+                <li class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
+            </ul>
+
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <p class="navbar-text"><i class="fa fa-user"></i> User</p>
+                </li>
+                <li><a href="#"><i class="fa fa-sign-out"></i>Log out</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-
-        <li class="active"><a href="#">Courses <span class="sr-only">(current)</span></a></li>
-      </ul>
-
-
-      <ul class="nav navbar-nav navbar-right">
-          <li>
-              <p class="navbar-text"><i class="fa fa-user"></i> User</p>
-          </li>
-        <li><a href="#"><i class="fa fa-sign-out"></i>Log out</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 </nav>
 
 <div class="container">
-    <h1>
-        Hello, Angular+
-    </h1>
+    <div class=row>
+        <div class="col-sm-5 form-group">
+            <input class="form-control" />
+        </div>
+        <div class="col-sm-2 form-group">
+            <button class="btn btn-primary btn-block">Find</button>
+        </div>
+        <div class="col-sm-3 col-sm-offset-2 form-group">
+            <button class="btn btn-primary btn-block"><i class="fa fa-plus"></i> Add course</button>
+        </div>
+    </div>
+
+
 </div>
 
