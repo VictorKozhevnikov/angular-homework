@@ -15,7 +15,8 @@ import { AppState } from './app.service';
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
-  template: require('./app.component.template.html')
+  template: require('./app.component.template.html'),
+  styleUrls: ['./course-list-item.scss']
 })
 export class AppComponent implements OnInit {
 
