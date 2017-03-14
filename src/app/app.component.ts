@@ -16,7 +16,10 @@ import { AppState } from './app.service';
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   template: require('./app.component.template.html'),
-  styleUrls: ['./course-list-item.scss']
+  styleUrls: [
+    './app.component.scss',
+    './course-list-item.scss'
+    ]
 })
 export class AppComponent implements OnInit {
 
