@@ -42,7 +42,7 @@ type StoreType = {
 
 // components
 
-import { FooterModule } from './components'; 
+import { FooterModule, HeaderModule } from './components'; 
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -57,7 +57,8 @@ import { FooterModule } from './components';
     FormsModule,
     HttpModule,
     //RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
-    FooterModule
+    FooterModule,
+    HeaderModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
