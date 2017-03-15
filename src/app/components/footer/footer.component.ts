@@ -2,7 +2,7 @@ import {Component} from  '@angular/core';
 
 @Component({
   selector: 'courses-footer',
-  template: ''
+  template: require ('./footer.component.template.html')
 })
-export class CoursesFooterComponent{
+export class FooterComponent{
 };
