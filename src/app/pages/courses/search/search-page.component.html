@@ -2,6 +2,6 @@
 
     <toolbox></toolbox>
 
-    <courses-list [courses]="courses"></courses-list>
+    <courses-list [courses]="courses" (delete)="deleteCourse($event)"></courses-list>
 
 </section>
