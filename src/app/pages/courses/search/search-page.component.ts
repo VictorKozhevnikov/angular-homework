@@ -1,4 +1,4 @@
-import { Component } from  '@angular/core';
+import { Component } from '@angular/core';
 import { Course } from '../../../domain/courses';
 
 @Component({
@@ -8,22 +8,29 @@ import { Course } from '../../../domain/courses';
 export class SearchPageComponent {
     public courses: Array<Course> = [
         {
+            id: 1,
             title: 'Video course 1',
             description: `Lorem ipsum dolor sit amet, at nobis aliquando scribentur usu, pri delectus oporteat constituto eu, in solet everti omittantur pro. Id clita vocent per, qualisque rationibus te duo. Nihil solet pri ne. Mel id porro libris atomorum, an duo dicat quando gloriatur, labore vidisse veritus sit at. Nec id quas debet, no cum tractatos consulatu dissentiet.`,
             duration: 88,
             beginTime: new Date()
         },
         {
+            id: 2,
             title: 'Video course 2',
             description: `Lorem ipsum dolor sit amet, at nobis aliquando scribentur usu, pri delectus oporteat constituto eu, in solet everti omittantur pro. Id clita vocent per, qualisque rationibus te duo. Nihil solet pri ne. Mel id porro libris atomorum, an duo dicat quando gloriatur, labore vidisse veritus sit at. Nec id quas debet, no cum tractatos consulatu dissentiet.`,
             duration: 99,
             beginTime: new Date()
         },
         {
+            id: 3,
             title: 'Video course 3',
             description: `Lorem ipsum dolor sit amet, at nobis aliquando scribentur usu, pri delectus oporteat constituto eu, in solet everti omittantur pro. Id clita vocent per, qualisque rationibus te duo. Nihil solet pri ne. Mel id porro libris atomorum, an duo dicat quando gloriatur, labore vidisse veritus sit at. Nec id quas debet, no cum tractatos consulatu dissentiet.`,
             duration: 1010,
             beginTime: new Date()
         }
     ];
+
+    private deleteCourse(course: Course): void {
+        console.log('---- delete course ' + course.id);
+    }
 }

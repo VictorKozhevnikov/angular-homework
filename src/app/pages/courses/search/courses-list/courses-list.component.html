@@ -1,1 +1,1 @@
-<course-list-item *ngFor="let item of courses" [course]="item"></course-list-item>
+<course-list-item *ngFor="let item of courses" [course]="item" (delete)="deleteCourse($event)"></course-list-item>
