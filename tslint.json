@@ -54,6 +54,8 @@
       "ban-keywords",
       "check-format"
     ],
-    "array-type": [true, "generic"]
+    "array-type": [true, "generic"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-empty": false
   }
 }
