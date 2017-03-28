@@ -9,19 +9,25 @@ export class SearchPageComponent implements OnInit {
     private readonly coursesService: CoursesService;
     private courses: Array<Course>;
 
-    public constructor(@Inject(coursesServiceToken) coursesService: CoursesService) {
+    public constructor( @Inject(coursesServiceToken) coursesService: CoursesService) {
         this.coursesService = coursesService;
     }
 
     public ngOnInit() {
+        this.update();
+    }
+
+    private deleteCourse(course: Course): void {
+        this.coursesService
+            .deleteCourse(course.id)
+            .then(this.update);
+    }
+
+    private update() {
         this.coursesService
             .getCourses()
             .then(courses => {
                 this.courses = courses;
             });
-    }
-
-    private deleteCourse(course: Course): void {
-        this.coursesService.deleteCourse(course.id);
     }
 }
