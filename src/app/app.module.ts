@@ -49,6 +49,8 @@ import { FooterModule, HeaderModule } from './components';
 // pages
 import { SearchPageModule } from './pages';
 
+// auth
+import { OfflineAuthModule } from './domain/auth/implementation/offline';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -72,7 +74,10 @@ import { SearchPageModule } from './pages';
         HeaderModule,
 
         // pages
-        SearchPageModule
+        SearchPageModule,
+
+        // auth
+        OfflineAuthModule
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,
