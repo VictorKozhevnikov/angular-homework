@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
+import { DeleteConfirmationComponent } from './delete-confirmation';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'courses-search-page',
@@ -7,10 +9,15 @@ import { Course, CoursesService, coursesServiceToken } from '../../../domain/cou
 })
 export class SearchPageComponent implements OnInit {
     private readonly coursesService: CoursesService;
+    private readonly modalService: NgbModal;
     private courses: Array<Course>;
 
-    public constructor( @Inject(coursesServiceToken) coursesService: CoursesService) {
+    public constructor(
+        @Inject(coursesServiceToken) coursesService: CoursesService,
+        modalService: NgbModal
+    ) {
         this.coursesService = coursesService;
+        this.modalService = modalService;
     }
 
     public ngOnInit() {
@@ -18,9 +25,16 @@ export class SearchPageComponent implements OnInit {
     }
 
     private deleteCourse(course: Course): void {
-        this.coursesService
-            .deleteCourse(course.id)
-            .then(this.update);
+        this.modalService
+            .open(DeleteConfirmationComponent);
+            // .result
+            // .then(shouldDelete => {
+            //     if (shouldDelete) {
+            //         return this.coursesService
+            //             .deleteCourse(course.id)
+            //             .then(this.update);
+            //     }
+            // });
     }
 
     private update() {
