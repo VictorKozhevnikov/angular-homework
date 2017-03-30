@@ -40,6 +40,9 @@ type StoreType = {
     disposeOldHosts: () => void
 };
 
+// ng-bootstrap
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // components
 import { FooterModule, HeaderModule } from './components';
 
@@ -60,6 +63,9 @@ import { SearchPageModule } from './pages';
         FormsModule,
         HttpModule,
         // RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
+
+        // ng-bootstrap
+        // NgbModule.forRoot(),
 
         // components
         FooterModule,
