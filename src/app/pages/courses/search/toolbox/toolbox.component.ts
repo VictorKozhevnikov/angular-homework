@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'toolbox',
-    template: require('./toolbox.component.html')
+    template: require('./toolbox.component.html'),
+    styleUrls: [
+        './toolbox.component.scss'
+    ]
 })
 export class ToolboxComponent {
     private text: string;
