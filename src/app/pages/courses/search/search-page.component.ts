@@ -9,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SearchPageComponent implements OnInit {
     private readonly coursesService: CoursesService;
-    private readonly modalService: NgbModal;
+    private readonly ngbModal: NgbModal;
     private courses: Array<Course>;
 
     public constructor(
@@ -17,7 +17,7 @@ export class SearchPageComponent implements OnInit {
         modalService: NgbModal
     ) {
         this.coursesService = coursesService;
-        this.modalService = modalService;
+        this.ngbModal = modalService;
     }
 
     public ngOnInit() {
@@ -25,16 +25,20 @@ export class SearchPageComponent implements OnInit {
     }
 
     private deleteCourse(course: Course): void {
-        this.modalService
+        let modalRef = this.ngbModal
             .open(DeleteConfirmationComponent);
-            // .result
-            // .then(shouldDelete => {
-            //     if (shouldDelete) {
-            //         return this.coursesService
-            //             .deleteCourse(course.id)
-            //             .then(this.update);
-            //     }
-            // });
+
+        modalRef.componentInstance.course = course;
+
+        modalRef.result
+            .then(shouldDelete => {
+                if (shouldDelete) {
+                    return this.coursesService
+                        .deleteCourse(course.id)
+                        .then(this.update);
+                }
+            });
+
     }
 
     private update() {

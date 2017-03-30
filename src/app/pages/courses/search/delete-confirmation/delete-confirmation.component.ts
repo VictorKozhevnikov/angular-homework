@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Course } from '../../../../domain/courses/contract';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,6 +7,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     template: require('./delete-confirmation.component.html')
 })
 export class DeleteConfirmationComponent {
+    public course: Course;
+
     private readonly modal: NgbActiveModal;
 
     public constructor(modal: NgbActiveModal) {
