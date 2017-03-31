@@ -2,9 +2,9 @@
  * Angular 2 decorators and services
  */
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation
+    Component,
+    OnInit,
+    ViewEncapsulation
 } from '@angular/core';
 import { AppState } from './app.service';
 
@@ -13,22 +13,31 @@ import { AppState } from './app.service';
  * Top Level Component
  */
 @Component({
-  selector: 'app',
-  encapsulation: ViewEncapsulation.None,
-  template: require('./app.component.template.html'),
-  styleUrls: [
-    './app.component.scss',
-    './course-list-item.scss'
+    selector: 'app',
+    encapsulation: ViewEncapsulation.None,
+    template: require('./app.component.html'),
+    styleUrls: [
+        './app.component.scss',
+        './course-list-item.scss'
     ]
 })
 export class AppComponent implements OnInit {
 
-  constructor(
-    public appState: AppState
-  ) {}
+    public currentPage: string;
+    public pages = {
+        login: 'login',
+        search: 'search',
+    };
 
-  public ngOnInit() {
-    console.log('Initial App State', this.appState.state);
-  }
+    constructor(
+        public appState: AppState
+    ) { }
+
+    public ngOnInit() {
+        console.log('Initial App State', this.appState.state);
+
+
+        this.currentPage = this.pages.login;
+    }
 
 }

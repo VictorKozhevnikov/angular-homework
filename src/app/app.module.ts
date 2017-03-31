@@ -48,6 +48,7 @@ import { FooterModule, HeaderModule } from './components';
 
 // pages
 import { SearchPageModule } from './pages';
+import { LoginModule } from './pages';
 
 // auth
 import { OfflineAuthModule } from './domain/auth/implementation/offline';
@@ -75,6 +76,7 @@ import { OfflineAuthModule } from './domain/auth/implementation/offline';
 
         // pages
         SearchPageModule,
+        LoginModule,
 
         // auth
         OfflineAuthModule
