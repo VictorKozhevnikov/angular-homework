@@ -15,7 +15,9 @@
             </ul>
 
             <span class="navbar-text">
-                <i class="fa fa-user"></i> User
+                <i class="fa fa-user"></i>
+                <span *ngIf="isAuthenticated">{{userName}}</span>
+                <span *ngIf="isAnonymous">Anonymous</span>
             </span>
 
             <ul class="navbar-nav">
