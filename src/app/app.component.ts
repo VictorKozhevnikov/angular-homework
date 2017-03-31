@@ -4,9 +4,12 @@
 import {
     Component,
     OnInit,
-    ViewEncapsulation
+    ViewEncapsulation,
+    Inject
 } from '@angular/core';
 import { AppState } from './app.service';
+
+import { AuthService, authServiceToken } from './domain/auth';
 
 /*
  * App Component
@@ -30,18 +33,26 @@ export class AppComponent implements OnInit {
     };
 
     constructor(
-        public appState: AppState
+        public appState: AppState,
+        @Inject(authServiceToken) private readonly authService: AuthService
     ) { }
 
     public ngOnInit() {
         console.log('Initial App State', this.appState.state);
-
 
         this.currentPage = this.pages.login;
     }
 
     public loginSucceeded() {
         this.currentPage = this.pages.search;
+    }
+
+    public logout() {
+        this.authService
+            .logout()
+            .then(() => {
+                this.currentPage = this.pages.login;
+            });
     }
 
 }
