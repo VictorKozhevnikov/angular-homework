@@ -1,3 +1,3 @@
 import { OpaqueToken } from '@angular/core';
 
-export let authServiceToken = new OpaqueToken('auth.authService');
+export const authServiceToken = new OpaqueToken('auth.authService');

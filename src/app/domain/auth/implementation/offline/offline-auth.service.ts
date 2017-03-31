@@ -13,9 +13,13 @@ export class OfflineAuthService implements AuthService {
     }
 
     public login(userName: string, password: string): Promise<boolean> {
-        // any password will do
-        this.userSession.beginSession(userName);
-        return Promise.resolve(true);
+        // the only user is admin/password
+        const loginIsSuccessful = userName === 'admin' && password === 'password';
+        if (loginIsSuccessful) {
+            this.userSession.beginSession(userName);
+        }
+
+        return Promise.resolve(loginIsSuccessful);
     }
 
     public logout(): Promise<void> {
