@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Output, EventEmitter } from '@angular/core';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
 
@@ -10,6 +10,8 @@ export class LoginComponent {
 
     public lastLoginFailed: boolean = false;
 
+    @Output() public loginSucceeded = new EventEmitter();
+
     public constructor(
         @Inject(authServiceToken) private readonly authService: AuthService
     )
@@ -17,10 +19,16 @@ export class LoginComponent {
 
     public login(userName: string, password: string) {
         this.authService
-        .login(userName, password)
-        .then(loginIsSuccessful => {
-            this.lastLoginFailed = !loginIsSuccessful;
-        });
+            .login(userName, password)
+            .then(loginIsSuccessful => {
+                this.lastLoginFailed = !loginIsSuccessful;
+                return loginIsSuccessful;
+            })
+            .then(loginIsSuccessful => {
+                if (loginIsSuccessful) {
+                    this.loginSucceeded.emit();
+                }
+            });
     }
 
 }

@@ -40,4 +40,8 @@ export class AppComponent implements OnInit {
         this.currentPage = this.pages.login;
     }
 
+    public loginSucceeded() {
+        this.currentPage = this.pages.search;
+    }
+
 }

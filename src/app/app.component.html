@@ -1,4 +1,4 @@
-<login *ngIf="currentPage === pages.login"> </login>
+<login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
 
 <courses-header *ngIf="currentPage === pages.search"></courses-header>
 
