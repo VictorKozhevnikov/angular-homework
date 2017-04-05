@@ -49,6 +49,7 @@ export class OfflineCoureseRepository {
     }
 
     public getAll(): Promise<Array<Course>> {
-        return Promise.resolve(this.storage);
+        const copy = { ...this.storage };
+        return Promise.resolve(copy);
     }
 }
