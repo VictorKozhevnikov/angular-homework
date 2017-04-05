@@ -112,7 +112,7 @@ export class AppModule {
     }
 
     public hmrOnDestroy(store: StoreType) {
-        const cmpLocation = this.appRef.components.map((cmp) => cmp.location.nativeElement);
+        const cmpLocation = this.appRef.components.map( cmp => cmp.location.nativeElement);
         // save state
         const state = this.appState._state;
         store.state = state;

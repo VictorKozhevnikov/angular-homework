@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Course, CourseData, CoursesService } from '../../contract';
 import { OfflineCoureseRepository } from './offline-courses.repository';
 
-
 @Injectable()
 export class OfflineCoursesService implements CoursesService {
     private readonly coursesRepository: OfflineCoureseRepository;

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../../contract';
 import { UserSession } from './user-session';
 
-
 @Injectable()
 export class OfflineAuthService implements AuthService {
     private userSession: UserSession;

@@ -14,8 +14,7 @@ export class LoginComponent {
 
     public constructor(
         @Inject(authServiceToken) private readonly authService: AuthService
-    )
-    { }
+    ) { }
 
     public login(userName: string, password: string) {
         this.authService

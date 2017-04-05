@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
 
-
 @Component({
     selector: 'courses-header',
     template: require('./header.component.html')
@@ -16,8 +15,7 @@ export class HeaderComponent implements OnInit {
 
     public constructor(
         @Inject(authServiceToken) private readonly authService: AuthService
-    )
-    { }
+    ) { }
 
     public ngOnInit(): void {
         this.isAuthenticated = this.authService.IsAuthenticated();

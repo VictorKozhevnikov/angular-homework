@@ -3,7 +3,6 @@ import { OfflineCoursesService } from './offline-courses.service';
 import { OfflineCoureseRepository } from './offline-courses.repository';
 import { coursesServiceToken } from '../../contract';
 
-
 @NgModule({
     declarations: [],
     imports: [],
