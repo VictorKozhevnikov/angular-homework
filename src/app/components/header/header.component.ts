@@ -1,10 +1,18 @@
-import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
+import {
+    Component,
+    Output,
+    EventEmitter,
+    OnInit,
+    Inject,
+    ChangeDetectionStrategy
+} from '@angular/core';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
 
 @Component({
     selector: 'courses-header',
-    template: require('./header.component.html')
+    template: require('./header.component.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
     public isAnonymous: boolean;
