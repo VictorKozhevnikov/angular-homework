@@ -11,7 +11,6 @@ export class OfflineAuthService implements AuthService {
     private userSession: UserSession;
     private userInfoObserver: any;
 
-
     public constructor(userSession: UserSession) {
         this.userSession = userSession;
 
