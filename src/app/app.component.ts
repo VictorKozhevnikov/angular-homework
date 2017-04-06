@@ -10,6 +10,7 @@ import {
 import { AppState } from './app.service';
 
 import { AuthService, authServiceToken } from './domain/auth';
+import { ProfilingService } from './core/profiling';
 
 /*
  * App Component
@@ -34,7 +35,9 @@ export class AppComponent implements OnInit {
 
     constructor(
         public appState: AppState,
-        @Inject(authServiceToken) private readonly authService: AuthService
+        @Inject(authServiceToken)
+        private readonly authService: AuthService,
+        private readonly profilingService: ProfilingService
     ) { }
 
     public ngOnInit() {
@@ -43,6 +46,8 @@ export class AppComponent implements OnInit {
         this.currentPage = this.authService.IsAuthenticated()
             ? this.pages.search
             : this.pages.login;
+
+        this.profilingService.beginProfiling();
     }
 
     public loginSucceeded() {
