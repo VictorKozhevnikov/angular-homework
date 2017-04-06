@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../../contract';
 import { UserSession } from './user-session';
@@ -6,9 +7,16 @@ import { UserSession } from './user-session';
 @Injectable()
 export class OfflineAuthService implements AuthService {
     private userSession: UserSession;
+    private userInfoObserver: any;
+    private userInfoObservable: Observable<string>;
 
     public constructor(userSession: UserSession) {
         this.userSession = userSession;
+
+        this.userInfoObservable = new Observable<string>(observer => {
+            this.userInfoObserver = observer;
+        });
+
     }
 
     public login(userName: string, password: string): Promise<boolean> {
@@ -16,6 +24,7 @@ export class OfflineAuthService implements AuthService {
         const loginIsSuccessful = userName === 'admin' && password === 'password';
         if (loginIsSuccessful) {
             this.userSession.beginSession(userName);
+            this.userInfoObserver.next(userName);
         }
 
         return Promise.resolve(loginIsSuccessful);
@@ -23,6 +32,7 @@ export class OfflineAuthService implements AuthService {
 
     public logout(): Promise<void> {
         this.userSession.endSession();
+        this.userInfoObserver.next(null);
         return Promise.resolve();
     }
 
@@ -32,5 +42,9 @@ export class OfflineAuthService implements AuthService {
 
     public GetUserInfo(): string {
         return this.userSession.getUserName();
+    }
+
+    public GetUserObservable(): Observable<string> {
+        return this.userInfoObservable;
     }
 }

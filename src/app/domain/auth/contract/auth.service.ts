@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+
 export interface AuthService {
 
     login(userName: string, password: string): Promise<boolean>;
@@ -7,4 +9,6 @@ export interface AuthService {
     IsAuthenticated(): boolean;
 
     GetUserInfo(): string;
+
+    GetUserObservable(): Observable<string>;
 }
