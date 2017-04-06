@@ -30,6 +30,7 @@ export class ProfilingService {
             beginTime = null;
 
             console.log('time delta: ' + timeDelta + ' ms');
+            console.log('time total: ' + this.timeElapsed + ' ms\n');
         });
     }
 
