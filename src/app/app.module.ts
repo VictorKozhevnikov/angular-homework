@@ -53,6 +53,8 @@ import { LoginModule } from './pages';
 // auth
 import { OfflineAuthModule } from './domain/auth/implementation/offline';
 
+import { ProfilingModule } from './core/profiling';
+
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
@@ -78,8 +80,8 @@ import { OfflineAuthModule } from './domain/auth/implementation/offline';
         SearchPageModule,
         LoginModule,
 
-        // auth
-        OfflineAuthModule
+        OfflineAuthModule,
+        ProfilingModule
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,
