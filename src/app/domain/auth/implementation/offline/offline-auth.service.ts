@@ -6,14 +6,16 @@ import { UserSession } from './user-session';
 
 @Injectable()
 export class OfflineAuthService implements AuthService {
+    public userInfo: Observable<string>;
+
     private userSession: UserSession;
     private userInfoObserver: any;
-    private userInfoObservable: Observable<string>;
+
 
     public constructor(userSession: UserSession) {
         this.userSession = userSession;
 
-        this.userInfoObservable = new Observable<string>(observer => {
+        this.userInfo = new Observable<string>(observer => {
             this.userInfoObserver = observer;
         });
 
@@ -42,9 +44,5 @@ export class OfflineAuthService implements AuthService {
 
     public GetUserInfo(): string {
         return this.userSession.getUserName();
-    }
-
-    public GetUserObservable(): Observable<string> {
-        return this.userInfoObservable;
     }
 }

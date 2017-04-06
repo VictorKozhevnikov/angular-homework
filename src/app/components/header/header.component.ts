@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
         this.isAnonymous = !this.authService.IsAuthenticated();
         this.userName = this.authService.GetUserInfo();
 
-        this.authService.GetUserObservable().subscribe(userName => {
+        this.authService.userInfo.subscribe(userName => {
             // other times get user info from observable
             this.userName = userName;
             this.isAuthenticated = userName !== null;
