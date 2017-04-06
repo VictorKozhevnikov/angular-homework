@@ -13,6 +13,9 @@ import { AuthService, authServiceToken } from '../../domain/auth';
 @Component({
     selector: 'courses-header',
     template: require('./header.component.html'),
+    styleUrls: [
+        './header.component.scss'
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
@@ -29,13 +32,13 @@ export class HeaderComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        console.log('---- get user info from service');
+        // first time get user info from service
         this.isAuthenticated = this.authService.IsAuthenticated();
         this.isAnonymous = !this.authService.IsAuthenticated();
         this.userName = this.authService.GetUserInfo();
 
         this.authService.GetUserObservable().subscribe(userName => {
-            console.log('---- get user info from observable');
+            // other times get user info from observable
             this.userName = userName;
             this.isAuthenticated = userName !== null;
             this.isAnonymous = userName == null;

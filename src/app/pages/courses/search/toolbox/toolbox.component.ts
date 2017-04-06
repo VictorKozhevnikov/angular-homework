@@ -6,9 +6,6 @@ import {
 @Component({
     selector: 'toolbox',
     template: require('./toolbox.component.html'),
-    styleUrls: [
-        './toolbox.component.scss'
-    ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToolboxComponent {
