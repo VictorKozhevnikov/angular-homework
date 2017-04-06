@@ -2,22 +2,23 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserSession {
-    private userName: string;
+    private static readonly userNameKey: string = 'userName';
 
     public beginSession(userName: string): void {
-        this.userName = userName;
+        localStorage.setItem(UserSession.userNameKey , userName);
     }
 
     public endSession(): void {
-        this.userName = null;
+        localStorage.setItem(UserSession.userNameKey, null);
     }
 
     public getUserName(): string {
-        return this.userName;
+        return localStorage.getItem(UserSession.userNameKey);
     }
 
     public hasSession(): boolean {
-        return this.userName !== null;
+        const userName: string = localStorage.getItem(UserSession.userNameKey);
+        return userName !== null;
     }
 
 }

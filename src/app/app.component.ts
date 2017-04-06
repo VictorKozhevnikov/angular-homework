@@ -40,7 +40,9 @@ export class AppComponent implements OnInit {
     public ngOnInit() {
         console.log('Initial App State', this.appState.state);
 
-        this.currentPage = this.pages.login;
+        this.currentPage = this.authService.IsAuthenticated()
+            ? this.pages.search
+            : this.pages.login;
     }
 
     public loginSucceeded() {
