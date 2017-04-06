@@ -1,6 +1,6 @@
-<login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
+<courses-header (logoutRequested)="logout()" ></courses-header>
 
-<courses-header *ngIf="currentPage === pages.search" (logoutRequested)="logout()" ></courses-header>
+<login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
 
 <courses-search-page *ngIf="currentPage === pages.search"></courses-search-page>
 
