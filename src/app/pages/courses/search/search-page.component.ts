@@ -35,7 +35,7 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
-                        .then(this.update);
+                        .then(() => this.update());
                 }
             });
 

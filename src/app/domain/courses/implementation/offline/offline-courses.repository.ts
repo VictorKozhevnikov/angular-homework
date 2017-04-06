@@ -49,7 +49,7 @@ export class OfflineCoureseRepository {
     }
 
     public getAll(): Promise<Array<Course>> {
-        const copy = { ...this.storage };
+        const copy: Array<Course> = this.storage.slice();
         return Promise.resolve(copy);
     }
 }
