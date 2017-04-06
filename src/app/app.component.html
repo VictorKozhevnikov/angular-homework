@@ -1,3 +1,5 @@
+<loading-block [visible]="loadingBlockIsVisible"></loading-block>
+
 <courses-header (logoutRequested)="logout()" ></courses-header>
 
 <login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
