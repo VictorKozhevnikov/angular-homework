@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoursesListComponent } from './courses-list.component';
 import { CourseListItemModule } from  './list-item';
+
+import { CoursesListComponent } from './courses-list.component';
+import { NoDataMessageComponent } from  './no-data-message/no-data-message.component';
 
 @NgModule({
     declarations: [
-        CoursesListComponent
+        CoursesListComponent,
+        NoDataMessageComponent
         ],
     imports: [CourseListItemModule, CommonModule],
     exports: [CoursesListComponent]
