@@ -49,8 +49,6 @@ export class AppComponent implements OnInit {
             ? this.pages.search
             : this.pages.login;
 
-        this.profilingService.beginProfiling();
-
         this.loadingBlockService.visible.subscribe(isVisible => {
             this.loadingBlockIsVisible = isVisible;
         });
