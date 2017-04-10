@@ -1,1 +1,3 @@
 <course-list-item *ngFor="let item of courses" [course]="item" (delete)="deleteCourse($event)"></course-list-item>
+
+<no-data-message *ngIf="!courses || courses.length === 0"></no-data-message>
