@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
     selector: 'no-data-message',
     template: `
         <div class="alert alert-info text-center" role="alert">
-            <strong>No data.</strong>
-            Feel free to add new course.
+            <h4>No data.</h4>
+            <div>Feel free to add new course.</div>
         </div>`
 })
 export class NoDataMessageComponent {
