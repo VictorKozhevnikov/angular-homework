@@ -22,8 +22,7 @@ import { LoadingBlockService } from './components';
     encapsulation: ViewEncapsulation.None,
     template: require('./app.component.html'),
     styleUrls: [
-        './app.component.scss',
-        './course-list-item.scss'
+        './app.component.scss'
     ]
 })
 export class AppComponent implements OnInit {
