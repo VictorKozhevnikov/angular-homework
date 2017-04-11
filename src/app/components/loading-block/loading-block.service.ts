@@ -6,6 +6,8 @@ export class LoadingBlockService {
     public visible: Observable<boolean>;
 
     private isVisibleNow: boolean;
+    private visibleId: number;
+    private lastId: number = 0;
     private visibleSubscriber: any;
 
     public constructor() {
@@ -16,13 +18,21 @@ export class LoadingBlockService {
 
     public show(): void {
         this.isVisibleNow = true;
+        this.visibleId = ++this.lastId;
+
         if (this.visibleSubscriber) {
             this.visibleSubscriber.next(true);
         }
     }
 
-    public hide(): void {
+    public hide(id?: number): void {
+        if (id && id !== this.visibleId) {
+            return;
+        }
+
         this.isVisibleNow = false;
+        this.visibleId = null;
+
         if (this.visibleSubscriber) {
             this.visibleSubscriber.next(false);
         }
@@ -35,7 +45,12 @@ export class LoadingBlockService {
                     this.show();
                     setTimeout(
                         () => {
-                            this.hide();
+                            const visibleId = this.visibleId;
+                            setTimeout(
+                                () => {
+                                    this.hide(visibleId);
+                                },
+                                10);
                             resolve();
                         },
                         milliseconds);
