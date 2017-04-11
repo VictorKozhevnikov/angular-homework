@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CourseListItemComponent } from './course-list-item.component';
 import {
     BorderByDateDirective
@@ -8,7 +9,7 @@ import {
     declarations: [
         CourseListItemComponent,
         BorderByDateDirective],
-    imports: [],
+    imports: [CommonModule],
     exports: [CourseListItemComponent]
 })
 export class CourseListItemModule {
