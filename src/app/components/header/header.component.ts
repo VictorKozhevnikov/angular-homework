@@ -26,7 +26,6 @@ export class HeaderComponent implements OnInit {
     @Output() public logoutRequested = new EventEmitter();
 
     public constructor(
-        @Inject(authServiceToken)
         private readonly authService: AuthService,
         private readonly changeDetector: ChangeDetectorRef
     ) { }

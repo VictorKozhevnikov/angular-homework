@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
 
     constructor(
         public appState: AppState,
-        @Inject(authServiceToken)
         private readonly authService: AuthService,
         private readonly profilingService: ProfilingService,
         private readonly loadingBlockService: LoadingBlockService
