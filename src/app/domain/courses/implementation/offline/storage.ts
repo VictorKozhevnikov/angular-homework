@@ -14,7 +14,7 @@ function generateData(): Array<Course> {
             + 'in voluptate velit esse cillum dolore eu fugiat nulla pariatur. '
             + 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt '
             + 'mollit anim id est laborum',
-            duration: 80 + i,
+            duration: 28 * i,
             beginTime: new Date(),
             isTopRated: i % 2 === 1
         };
