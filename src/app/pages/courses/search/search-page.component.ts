@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FilterPipe } from '../../../components';
+import { FilterPipe } from './filter';
 
 @Component({
     selector: 'courses-search-page',
@@ -11,7 +11,6 @@ import { FilterPipe } from '../../../components';
 })
 export class SearchPageComponent implements OnInit {
     private courses: Array<Course>;
-    private filterText: string;
 
     public constructor(
         @Inject(coursesServiceToken) private readonly coursesService: CoursesService,
@@ -42,15 +41,14 @@ export class SearchPageComponent implements OnInit {
     }
 
     private filterChanged(filterText: string): void {
-        this.filterText = filterText;
-        this.update();
+        this.update(filterText);
     }
 
-    private update() {
+    private update(filterText: string = '') {
         this.coursesService
             .getCourses()
             .then(courses => {
-                return this.filterPipe.transform(courses, { title: this.filterText });
+                return this.filterPipe.transform(courses, filterText);
             })
             .then(courses => {
                 this.courses = courses;
