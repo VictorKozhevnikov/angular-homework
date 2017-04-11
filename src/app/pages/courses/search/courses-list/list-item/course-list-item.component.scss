@@ -2,6 +2,14 @@
  .course-list-item{
      padding-top: 10px;
      margin-bottom: 20px;
+
+    &__star{
+        color: gold;
+    }
+
+    &__top-rated{
+        background-color: #fffdf4;
+    }
  }
 
 @media only screen and (min-width : 768px) {
