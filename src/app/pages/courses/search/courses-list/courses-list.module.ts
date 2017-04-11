@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseListItemModule } from  './list-item';
 
+import { OrderByModule } from '../../../../components';
+
 import { CoursesListComponent } from './courses-list.component';
 import { NoDataMessageComponent } from  './no-data-message/no-data-message.component';
 
@@ -10,7 +12,7 @@ import { NoDataMessageComponent } from  './no-data-message/no-data-message.compo
         CoursesListComponent,
         NoDataMessageComponent
         ],
-    imports: [CourseListItemModule, CommonModule],
+    imports: [CourseListItemModule, CommonModule, OrderByModule],
     exports: [CoursesListComponent]
 })
 export class CoursesListModule {
