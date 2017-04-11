@@ -13,7 +13,8 @@ export class SearchPageComponent implements OnInit {
     private courses: Array<Course>;
 
     public constructor(
-        @Inject(coursesServiceToken) private readonly coursesService: CoursesService,
+        @Inject(coursesServiceToken)
+        private readonly coursesService: CoursesService,
         private readonly ngbModal: NgbModal,
         private readonly filterPipe: FilterPipe
     ) {

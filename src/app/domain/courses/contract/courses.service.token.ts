@@ -1,3 +1,4 @@
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
+import { CoursesService } from './courses.service';
 
-export const coursesServiceToken = new OpaqueToken('courses.coursesService');
+export const coursesServiceToken = new InjectionToken<CoursesService>('courses.coursesService');

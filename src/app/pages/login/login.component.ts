@@ -20,7 +20,8 @@ export class LoginComponent {
     @Output() public loginSucceeded = new EventEmitter();
 
     public constructor(
-        @Inject(authServiceToken) private readonly authService: AuthService
+        @Inject(authServiceToken)
+        private readonly authService: AuthService
     ) { }
 
     public login(userName: string, password: string) {
