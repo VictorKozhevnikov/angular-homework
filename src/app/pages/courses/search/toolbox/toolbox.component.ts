@@ -1,6 +1,8 @@
 import {
     Component,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    Output,
+    EventEmitter
 } from '@angular/core';
 
 @Component({
@@ -9,9 +11,10 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToolboxComponent {
+    @Output() public filterChanged: EventEmitter<string> = new EventEmitter<string>();
     private text: string;
 
     private search(text: string): void {
-        console.log('---- search: ' + text + ', field value is ' + this.text);
+        this.filterChanged.emit(text);
     }
 }

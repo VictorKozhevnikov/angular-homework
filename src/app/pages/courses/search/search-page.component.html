@@ -1,6 +1,6 @@
 <section class="container app__main-section">
 
-    <toolbox></toolbox>
+    <toolbox (filterChanged)="filterChanged($event)"></toolbox>
 
     <courses-list [courses]="courses" (delete)="deleteCourse($event)"></courses-list>
 
