@@ -9,7 +9,7 @@ export class UserSession {
     }
 
     public endSession(): void {
-        localStorage.setItem(UserSession.userNameKey, null);
+        localStorage.removeItem(UserSession.userNameKey);
     }
 
     public getUserName(): string {
