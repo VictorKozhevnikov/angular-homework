@@ -8,9 +8,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     template: require('./search-page.component.html')
 })
 export class SearchPageComponent implements OnInit {
+    public courses: Array<Course>;
+
     private readonly coursesService: CoursesService;
     private readonly ngbModal: NgbModal;
-    private courses: Array<Course>;
 
     public constructor(
         @Inject(coursesServiceToken) coursesService: CoursesService,
@@ -24,7 +25,7 @@ export class SearchPageComponent implements OnInit {
         this.update();
     }
 
-    private deleteCourse(course: Course): void {
+    public deleteCourse(course: Course): void {
         let modalRef = this.ngbModal
             .open(DeleteConfirmationComponent);
 
@@ -41,7 +42,7 @@ export class SearchPageComponent implements OnInit {
 
     }
 
-    private update() {
+    public update() {
         this.coursesService
             .getCourses()
             .then(courses => {
