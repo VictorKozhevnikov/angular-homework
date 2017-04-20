@@ -10,7 +10,7 @@ import { FilterPipe } from './filter';
     providers: [FilterPipe]
 })
 export class SearchPageComponent implements OnInit {
-    private courses: Array<Course>;
+    public courses: Array<Course>;
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -24,7 +24,7 @@ export class SearchPageComponent implements OnInit {
         this.update();
     }
 
-    private deleteCourse(course: Course): void {
+    public deleteCourse(course: Course): void {
         let modalRef = this.ngbModal
             .open(DeleteConfirmationComponent);
 
@@ -41,11 +41,15 @@ export class SearchPageComponent implements OnInit {
 
     }
 
+<<<<<<< HEAD
     private filterChanged(filterText: string): void {
         this.update(filterText);
     }
 
     private update(filterText: string = '') {
+=======
+    public update() {
+>>>>>>> homework/homework-3
         this.coursesService
             .getCourses()
             .then(courses => {
