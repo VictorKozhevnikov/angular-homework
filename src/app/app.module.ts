@@ -40,12 +40,18 @@ type StoreType = {
     disposeOldHosts: () => void
 };
 
+// ng-bootstrap
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // components
 import { FooterModule, HeaderModule } from './components';
 
 // pages
 import { SearchPageModule } from './pages';
+import { LoginModule } from './pages';
 
+// auth
+import { OfflineAuthModule } from './domain/auth/implementation/offline';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -61,12 +67,19 @@ import { SearchPageModule } from './pages';
         HttpModule,
         // RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
 
+        // ng-bootstrap
+        // NgbModule.forRoot(),
+
         // components
         FooterModule,
         HeaderModule,
 
         // pages
-        SearchPageModule
+        SearchPageModule,
+        LoginModule,
+
+        // auth
+        OfflineAuthModule
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,

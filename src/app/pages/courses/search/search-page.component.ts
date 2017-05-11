@@ -1,29 +1,52 @@
-import { Component } from  '@angular/core';
-import { Course } from '../../../domain/courses';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
+import { DeleteConfirmationComponent } from './delete-confirmation';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'courses-search-page',
     template: require('./search-page.component.html')
 })
-export class SearchPageComponent {
-    public courses: Array<Course> = [
-        {
-            title: 'Video course 1',
-            description: `Lorem ipsum dolor sit amet, at nobis aliquando scribentur usu, pri delectus oporteat constituto eu, in solet everti omittantur pro. Id clita vocent per, qualisque rationibus te duo. Nihil solet pri ne. Mel id porro libris atomorum, an duo dicat quando gloriatur, labore vidisse veritus sit at. Nec id quas debet, no cum tractatos consulatu dissentiet.`,
-            duration: 88,
-            beginTime: new Date()
-        },
-        {
-            title: 'Video course 2',
-            description: `Lorem ipsum dolor sit amet, at nobis aliquando scribentur usu, pri delectus oporteat constituto eu, in solet everti omittantur pro. Id clita vocent per, qualisque rationibus te duo. Nihil solet pri ne. Mel id porro libris atomorum, an duo dicat quando gloriatur, labore vidisse veritus sit at. Nec id quas debet, no cum tractatos consulatu dissentiet.`,
-            duration: 99,
-            beginTime: new Date()
-        },
-        {
-            title: 'Video course 3',
-            description: `Lorem ipsum dolor sit amet, at nobis aliquando scribentur usu, pri delectus oporteat constituto eu, in solet everti omittantur pro. Id clita vocent per, qualisque rationibus te duo. Nihil solet pri ne. Mel id porro libris atomorum, an duo dicat quando gloriatur, labore vidisse veritus sit at. Nec id quas debet, no cum tractatos consulatu dissentiet.`,
-            duration: 1010,
-            beginTime: new Date()
-        }
-    ];
+export class SearchPageComponent implements OnInit {
+    public courses: Array<Course>;
+
+    private readonly coursesService: CoursesService;
+    private readonly ngbModal: NgbModal;
+
+    public constructor(
+        @Inject(coursesServiceToken) coursesService: CoursesService,
+        modalService: NgbModal
+    ) {
+        this.coursesService = coursesService;
+        this.ngbModal = modalService;
+    }
+
+    public ngOnInit() {
+        this.update();
+    }
+
+    public deleteCourse(course: Course): void {
+        let modalRef = this.ngbModal
+            .open(DeleteConfirmationComponent);
+
+        modalRef.componentInstance.course = course;
+
+        modalRef.result
+            .then(shouldDelete => {
+                if (shouldDelete) {
+                    return this.coursesService
+                        .deleteCourse(course.id)
+                        .then(this.update);
+                }
+            });
+
+    }
+
+    public update() {
+        this.coursesService
+            .getCourses()
+            .then(courses => {
+                this.courses = courses;
+            });
+    }
 }

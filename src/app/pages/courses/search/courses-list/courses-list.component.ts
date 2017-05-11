@@ -1,5 +1,5 @@
-import { Component, Input } from  '@angular/core';
-import { Course } from '../../../../domain/courses';
+import { Component, Input, Output, EventEmitter } from  '@angular/core';
+import { Course } from '../../../../domain/courses/contract';
 
 @Component({
     selector: 'courses-list',
@@ -7,4 +7,9 @@ import { Course } from '../../../../domain/courses';
 })
 export class CoursesListComponent {
     @Input() public courses: Array<Course>;
+    @Output() public delete = new EventEmitter<Course>();
+
+    private deleteCourse(Course: Course): void {
+        this.delete.emit(Course);
+    }
 }
