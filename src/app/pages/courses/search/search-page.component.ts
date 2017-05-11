@@ -10,7 +10,6 @@ import { FilterPipe } from './filter';
     providers: [FilterPipe]
 })
 export class SearchPageComponent implements OnInit {
-    private courses: Array<Course>;
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -24,7 +23,7 @@ export class SearchPageComponent implements OnInit {
         this.update();
     }
 
-    private deleteCourse(course: Course): void {
+    public deleteCourse(course: Course): void {
         let modalRef = this.ngbModal
             .open(DeleteConfirmationComponent);
 
