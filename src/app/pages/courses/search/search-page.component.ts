@@ -11,6 +11,8 @@ import { FilterPipe } from './filter';
 })
 export class SearchPageComponent implements OnInit {
 
+    public courses: Array<Course>;
+
     public constructor(
         @Inject(coursesServiceToken)
         private readonly coursesService: CoursesService,
