@@ -27,11 +27,10 @@ export class LoginComponent {
     public login(userName: string, password: string) {
         this.authService
             .login(userName, password)
-            .then(loginIsSuccessful => {
+            .do(loginIsSuccessful => {
                 this.lastLoginFailed = !loginIsSuccessful;
-                return loginIsSuccessful;
             })
-            .then(loginIsSuccessful => {
+            .subscribe(loginIsSuccessful => {
                 if (loginIsSuccessful) {
                     this.loginSucceeded.emit();
                 }

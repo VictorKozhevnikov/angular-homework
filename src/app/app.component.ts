@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
             ? this.pages.search
             : this.pages.login;
 
-        this.loadingBlockService.visible.subscribe(isVisible => {
+        this.loadingBlockService.blockIsVisible.subscribe(isVisible => {
             this.loadingBlockIsVisible = isVisible;
         });
     }
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
     public logout() {
         this.authService
             .logout()
-            .then(() => {
+            .subscribe(() => {
                 this.currentPage = this.pages.login;
             });
     }

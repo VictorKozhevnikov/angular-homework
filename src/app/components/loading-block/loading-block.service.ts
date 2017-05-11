@@ -1,61 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject, ReplaySubject } from 'rxjs/Rx';
 
 @Injectable()
 export class LoadingBlockService {
-    public visible: Observable<boolean>;
 
-    private isVisibleNow: boolean;
-    private visibleId: number;
-    private lastId: number = 0;
-    private visibleSubscriber: any;
+    public blockIsVisible: Observable<boolean>;
+
+    private showSubject = new Subject<void>();
+    private hideSubject = new Subject<void>();
 
     public constructor() {
-        this.visible = new Observable<boolean>(subscriber => {
-            this.visibleSubscriber = subscriber;
-        });
+        const visibleObservable = this.showSubject.map(_ => 1)
+            .merge(this.hideSubject.map(_ => -1))
+            .scan((numberOfOperations, item) => numberOfOperations += item)
+            .map(numberOfOperations => numberOfOperations > 0)
+            .startWith(false)
+            .distinctUntilChanged();
+
+        const visibleSubject = new ReplaySubject<boolean>(1);
+
+        // Igrore unsubscription. Subscribe forever
+        visibleObservable.subscribe(visibleSubject);
+
+        this.blockIsVisible = visibleSubject.asObservable();
     }
 
     public show(): void {
-        this.isVisibleNow = true;
-        this.visibleId = ++this.lastId;
-
-        if (this.visibleSubscriber) {
-            this.visibleSubscriber.next(true);
-        }
+        this.showSubject.next();
     }
 
     public hide(id?: number): void {
-        if (id && id !== this.visibleId) {
-            return;
-        }
-
-        this.isVisibleNow = false;
-        this.visibleId = null;
-
-        if (this.visibleSubscriber) {
-            this.visibleSubscriber.next(false);
-        }
+        this.hideSubject.next();
     }
 
-    public block(milliseconds: number): Promise<void> {
-        return new Promise<void>(resolve => {
-            setTimeout(
-                () => {
-                    this.show();
-                    setTimeout(
-                        () => {
-                            const visibleId = this.visibleId;
-                            setTimeout(
-                                () => {
-                                    this.hide(visibleId);
-                                },
-                                10);
-                            resolve();
-                        },
-                        milliseconds);
-                },
-                0);
-        });
-    }
 }
