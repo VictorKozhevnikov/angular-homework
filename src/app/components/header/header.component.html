@@ -1,4 +1,4 @@
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded header">
     <div class="container">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +20,7 @@
                 <span *ngIf="isAnonymous">Anonymous</span>
             </span>
 
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" *ngIf="isAuthenticated">
                 <li class="nav-item">
                     <a class="nav-link" href="#" (click)="logout()">Log out</a>
                 </li>

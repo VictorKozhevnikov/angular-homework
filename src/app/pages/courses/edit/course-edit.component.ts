@@ -1,8 +1,12 @@
-import {Component} from  '@angular/core';
+import {
+    Component,
+    ChangeDetectionStrategy
+} from '@angular/core';
 
 @Component({
-  selector: 'course-edit',
-  template: ''
+    selector: 'course-edit',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseEditComponent{
+export class CourseEditComponent {
 }

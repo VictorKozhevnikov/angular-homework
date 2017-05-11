@@ -10,6 +10,8 @@ import {
 import { AppState } from './app.service';
 
 import { AuthService, authServiceToken } from './domain/auth';
+import { ProfilingService } from './core/profiling';
+import { LoadingBlockService } from './components';
 
 /*
  * App Component
@@ -25,8 +27,9 @@ import { AuthService, authServiceToken } from './domain/auth';
     ]
 })
 export class AppComponent implements OnInit {
-
     public currentPage: string;
+    public loadingBlockIsVisible: boolean;
+
     public pages = {
         login: 'login',
         search: 'search',
@@ -34,13 +37,24 @@ export class AppComponent implements OnInit {
 
     constructor(
         public appState: AppState,
-        @Inject(authServiceToken) private readonly authService: AuthService
+        @Inject(authServiceToken)
+        private readonly authService: AuthService,
+        private readonly profilingService: ProfilingService,
+        private readonly loadingBlockService: LoadingBlockService
     ) { }
 
     public ngOnInit() {
         console.log('Initial App State', this.appState.state);
 
-        this.currentPage = this.pages.login;
+        this.currentPage = this.authService.IsAuthenticated()
+            ? this.pages.search
+            : this.pages.login;
+
+        this.profilingService.beginProfiling();
+
+        this.loadingBlockService.visible.subscribe(isVisible => {
+            this.loadingBlockIsVisible = isVisible;
+        });
     }
 
     public loginSucceeded() {

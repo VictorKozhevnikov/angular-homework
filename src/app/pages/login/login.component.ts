@@ -1,10 +1,17 @@
-import { Component, Inject, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    Inject,
+    Output,
+    EventEmitter,
+    ChangeDetectionStrategy
+} from '@angular/core';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
 
 @Component({
     selector: 'login',
-    templateUrl: './login.component.html'
+    templateUrl: './login.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
 
@@ -14,8 +21,7 @@ export class LoginComponent {
 
     public constructor(
         @Inject(authServiceToken) private readonly authService: AuthService
-    )
-    { }
+    ) { }
 
     public login(userName: string, password: string) {
         this.authService

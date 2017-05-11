@@ -8,7 +8,6 @@ import { ToolboxModule } from './toolbox';
 import { OfflineCoursesModule } from '../../../domain/courses/implementation/offline';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 
-
 @NgModule({
     declarations: [
         SearchPageComponent, DeleteConfirmationComponent],
@@ -25,4 +24,3 @@ import { DeleteConfirmationComponent } from './delete-confirmation';
 export class SearchPageModule {
     constructor() { }
 }
-
