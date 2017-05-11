@@ -10,6 +10,9 @@ import { Course } from '../../../../../domain/courses/contract';
 @Component({
     selector: 'course-list-item',
     template: require('./course-list-item.component.html'),
+    styleUrls: [
+        './course-list-item.component.scss'
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseListItemComponent {

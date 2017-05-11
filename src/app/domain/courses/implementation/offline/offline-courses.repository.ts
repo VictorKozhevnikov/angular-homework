@@ -18,7 +18,8 @@ export class OfflineCoureseRepository {
             title: courseData.title,
             description: courseData.description,
             duration: courseData.duration,
-            beginTime: courseData.beginTime
+            beginTime: courseData.beginTime,
+            isTopRated: courseData.isTopRated
         };
 
         this.storage.push(course);

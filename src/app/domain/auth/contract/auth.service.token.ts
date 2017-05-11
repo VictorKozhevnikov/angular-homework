@@ -1,3 +1,4 @@
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
+import { AuthService } from './auth.service';
 
-export const authServiceToken = new OpaqueToken('auth.authService');
+export const authServiceToken = new InjectionToken<AuthService>('auth.authService');

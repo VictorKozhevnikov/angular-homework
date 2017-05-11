@@ -1,7 +1,23 @@
  /* Small Devices, Tablets */
  .course-list-item{
-     margin-top: 20px;
+     padding-top: 10px;
      margin-bottom: 20px;
+
+    &__star{
+        color: gold;
+    }
+
+    &__top-rated{
+        background-color: #fffdf4;
+    }
+
+    &__duration{
+        margin-left: 1em;
+    }
+
+    &__date{
+        font-style: italic;
+    }
  }
 
 @media only screen and (min-width : 768px) {

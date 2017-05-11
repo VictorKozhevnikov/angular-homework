@@ -22,8 +22,7 @@ import { LoadingBlockService } from './components';
     encapsulation: ViewEncapsulation.None,
     template: require('./app.component.html'),
     styleUrls: [
-        './app.component.scss',
-        './course-list-item.scss'
+        './app.component.scss'
     ]
 })
 export class AppComponent implements OnInit {
@@ -49,8 +48,6 @@ export class AppComponent implements OnInit {
         this.currentPage = this.authService.IsAuthenticated()
             ? this.pages.search
             : this.pages.login;
-
-        this.profilingService.beginProfiling();
 
         this.loadingBlockService.visible.subscribe(isVisible => {
             this.loadingBlockIsVisible = isVisible;

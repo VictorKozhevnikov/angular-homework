@@ -5,6 +5,9 @@ import { Observable } from 'rxjs/Observable';
 export class LoadingBlockService {
     public visible: Observable<boolean>;
 
+    private isVisibleNow: boolean;
+    private visibleId: number;
+    private lastId: number = 0;
     private visibleSubscriber: any;
 
     public constructor() {
@@ -14,12 +17,22 @@ export class LoadingBlockService {
     }
 
     public show(): void {
+        this.isVisibleNow = true;
+        this.visibleId = ++this.lastId;
+
         if (this.visibleSubscriber) {
             this.visibleSubscriber.next(true);
         }
     }
 
-    public hide(): void {
+    public hide(id?: number): void {
+        if (id && id !== this.visibleId) {
+            return;
+        }
+
+        this.isVisibleNow = false;
+        this.visibleId = null;
+
         if (this.visibleSubscriber) {
             this.visibleSubscriber.next(false);
         }
@@ -27,15 +40,22 @@ export class LoadingBlockService {
 
     public block(milliseconds: number): Promise<void> {
         return new Promise<void>(resolve => {
-            console.log('this is ' + this);
-            this.show();
             setTimeout(
                 () => {
-                    console.log('this is ' + this);
-                    this.hide();
-                    resolve();
+                    this.show();
+                    setTimeout(
+                        () => {
+                            const visibleId = this.visibleId;
+                            setTimeout(
+                                () => {
+                                    this.hide(visibleId);
+                                },
+                                10);
+                            resolve();
+                        },
+                        milliseconds);
                 },
-                milliseconds);
+                0);
         });
     }
 }

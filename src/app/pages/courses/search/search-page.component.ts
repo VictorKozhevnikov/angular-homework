@@ -2,23 +2,23 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FilterPipe } from './filter';
 
 @Component({
     selector: 'courses-search-page',
-    template: require('./search-page.component.html')
+    template: require('./search-page.component.html'),
+    providers: [FilterPipe]
 })
 export class SearchPageComponent implements OnInit {
+
     public courses: Array<Course>;
 
-    private readonly coursesService: CoursesService;
-    private readonly ngbModal: NgbModal;
-
     public constructor(
-        @Inject(coursesServiceToken) coursesService: CoursesService,
-        modalService: NgbModal
+        @Inject(coursesServiceToken)
+        private readonly coursesService: CoursesService,
+        private readonly ngbModal: NgbModal,
+        private readonly filterPipe: FilterPipe
     ) {
-        this.coursesService = coursesService;
-        this.ngbModal = modalService;
     }
 
     public ngOnInit() {
@@ -42,9 +42,16 @@ export class SearchPageComponent implements OnInit {
 
     }
 
-    public update() {
+    private filterChanged(filterText: string): void {
+        this.update(filterText);
+    }
+
+    private update(filterText: string = '') {
         this.coursesService
             .getCourses()
+            .then(courses => {
+                return this.filterPipe.transform(courses, filterText);
+            })
             .then(courses => {
                 this.courses = courses;
             });
