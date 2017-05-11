@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, ReplaySubject } from 'rxjs/Rx';
 
+// actually the LoadingBlockService does two functions
+//  - it tracks currently running operations
+//  - it decides when to show and hide the blocking component
 @Injectable()
 export class LoadingBlockService {
 
@@ -19,17 +22,16 @@ export class LoadingBlockService {
 
         const visibleSubject = new ReplaySubject<boolean>(1);
 
-        // Igrore unsubscription. Subscribe forever
         visibleObservable.subscribe(visibleSubject);
 
         this.blockIsVisible = visibleSubject.asObservable();
     }
 
-    public show(): void {
+    public workStarted(): void {
         this.showSubject.next();
     }
 
-    public hide(id?: number): void {
+    public workFinished(id?: number): void {
         this.hideSubject.next();
     }
 

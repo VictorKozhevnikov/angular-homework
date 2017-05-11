@@ -7,10 +7,13 @@ import {
     ViewEncapsulation,
     Inject
 } from '@angular/core';
+
+import { Observable } from 'rxjs/Rx';
+
 import { AppState } from './app.service';
 
 import { AuthService, authServiceToken } from './domain/auth';
-import { ProfilingService } from './core/profiling';
+import { ProfilingService, DummyWorkService } from './core';
 import { LoadingBlockService } from './components';
 
 /*
@@ -27,7 +30,6 @@ import { LoadingBlockService } from './components';
 })
 export class AppComponent implements OnInit {
     public currentPage: string;
-    public loadingBlockIsVisible: boolean;
 
     public pages = {
         login: 'login',
@@ -39,7 +41,8 @@ export class AppComponent implements OnInit {
         @Inject(authServiceToken)
         private readonly authService: AuthService,
         private readonly profilingService: ProfilingService,
-        private readonly loadingBlockService: LoadingBlockService
+        private readonly loadingBlockService: LoadingBlockService,
+        private readonly dummyWorkService: DummyWorkService
     ) { }
 
     public ngOnInit() {
@@ -49,9 +52,8 @@ export class AppComponent implements OnInit {
             ? this.pages.search
             : this.pages.login;
 
-        this.loadingBlockService.blockIsVisible.subscribe(isVisible => {
-            this.loadingBlockIsVisible = isVisible;
-        });
+        this.dummyWorkService.workStarted.subscribe(_ => this.loadingBlockService.workStarted());
+        this.dummyWorkService.workFinished.subscribe(_ => this.loadingBlockService.workFinished());
     }
 
     public loginSucceeded() {
