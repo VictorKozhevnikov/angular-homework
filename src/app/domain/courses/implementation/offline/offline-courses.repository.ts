@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+
 import { CoursesOfflineRepository } from '../courses-offline.repository';
 import { Course, CourseData } from '../../contract';
 import { storage } from './storage';
@@ -12,7 +14,7 @@ export class OfflineCoureseRepository {
         this.storage = storage;
     }
 
-    public create(courseData: CourseData): Promise<void> {
+    public create(courseData: CourseData): Observable<void> {
         let course = {
             id: ++this.lastId,
             title: courseData.title,
@@ -24,33 +26,33 @@ export class OfflineCoureseRepository {
 
         this.storage.push(course);
 
-        return Promise.resolve();
+        return Observable.of(null);
     }
 
-    public find(courseId: number): Promise<Course> {
+    public find(courseId: number): Observable<Course> {
         let course = this.storage.find(item => item.id === courseId);
-        return Promise.resolve(course);
+        return Observable.of(course);
     }
 
-    public save(course: Course): Promise<void> {
+    public save(course: Course): Observable<void> {
         let courseIndex = this.storage.findIndex(item => item.id === course.id);
         if (courseIndex === -1) {
             throw new Error('No item with such id in repository');
         }
         this.storage[courseIndex] = (course);
-        return Promise.resolve();
+        return Observable.of(null);
     }
 
-    public delete(courseId: number): Promise<void> {
+    public delete(courseId: number): Observable<void> {
         let courseIndex = this.storage.findIndex(item => item.id === courseId);
         if (courseIndex > -1) {
             this.storage.splice(courseIndex, 1);
         }
-        return Promise.resolve();
+        return Observable.of(null);
     }
 
-    public getAll(): Promise<Array<Course>> {
+    public getAll(): Observable<Array<Course>> {
         const copy: Array<Course> = this.storage.slice();
-        return Promise.resolve(copy);
+        return Observable.of(copy);
     }
 }

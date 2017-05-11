@@ -1,13 +1,17 @@
 import {
     Component,
-    Input,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    OnInit
 } from '@angular/core';
+
+import { Observable } from 'rxjs/Rx';
+
+import { LoadingBlockService } from './loading-block.service';
 
 @Component({
     selector: 'loading-block',
     template: `
-        <div class="backdrop" *ngIf="visible">
+        <div class="backdrop" *ngIf="isVisible | async">
             <div class="loader">
                 Loading...
             </div>
@@ -17,6 +21,15 @@ import {
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoadingBlockComponent {
-    @Input() public visible: boolean;
+export class LoadingBlockComponent implements OnInit {
+    public isVisible: Observable<boolean>;
+
+    public constructor(
+        private readonly loadingBlockService: LoadingBlockService) {
+    }
+
+    public ngOnInit() {
+        this.isVisible = this.loadingBlockService.blockIsVisible;
+    }
+
 };

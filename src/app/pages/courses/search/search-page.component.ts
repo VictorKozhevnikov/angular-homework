@@ -35,27 +35,23 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
-                        .then(() => this.update());
+                        .subscribe(() => this.update());
                 }
             });
 
     }
 
-<<<<<<< HEAD
     private filterChanged(filterText: string): void {
         this.update(filterText);
     }
 
     private update(filterText: string = '') {
-=======
-    public update() {
->>>>>>> homework/homework-3
         this.coursesService
             .getCourses()
-            .then(courses => {
+            .map(courses => {
                 return this.filterPipe.transform(courses, filterText);
             })
-            .then(courses => {
+            .subscribe(courses => {
                 this.courses = courses;
             });
     }

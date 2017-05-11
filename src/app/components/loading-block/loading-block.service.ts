@@ -1,61 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject, ReplaySubject } from 'rxjs/Rx';
 
+// actually the LoadingBlockService does two functions
+//  - it tracks currently running operations
+//  - it decides when to show and hide the blocking component
 @Injectable()
 export class LoadingBlockService {
-    public visible: Observable<boolean>;
 
-    private isVisibleNow: boolean;
-    private visibleId: number;
-    private lastId: number = 0;
-    private visibleSubscriber: any;
+    public blockIsVisible: Observable<boolean>;
+
+    private workStartedSubject = new Subject<void>();
+    private workFinishedSubject = new Subject<void>();
 
     public constructor() {
-        this.visible = new Observable<boolean>(subscriber => {
-            this.visibleSubscriber = subscriber;
-        });
+        const visibleObservable = this.workStartedSubject.map(_ => 1)
+            .merge(this.workFinishedSubject.map(_ => -1))
+            .scan((numberOfOperations, item) => numberOfOperations += item)
+            .map(numberOfOperations => numberOfOperations > 0)
+            .startWith(false)
+            .distinctUntilChanged();
+
+        const visibleSubject = new ReplaySubject<boolean>(1);
+
+        visibleObservable.subscribe(visibleSubject);
+
+        this.blockIsVisible = visibleSubject.asObservable();
     }
 
-    public show(): void {
-        this.isVisibleNow = true;
-        this.visibleId = ++this.lastId;
-
-        if (this.visibleSubscriber) {
-            this.visibleSubscriber.next(true);
-        }
+    public workStarted(): void {
+        this.workStartedSubject.next();
     }
 
-    public hide(id?: number): void {
-        if (id && id !== this.visibleId) {
-            return;
-        }
-
-        this.isVisibleNow = false;
-        this.visibleId = null;
-
-        if (this.visibleSubscriber) {
-            this.visibleSubscriber.next(false);
-        }
+    public workFinished(id?: number): void {
+        this.workFinishedSubject.next();
     }
 
-    public block(milliseconds: number): Promise<void> {
-        return new Promise<void>(resolve => {
-            setTimeout(
-                () => {
-                    this.show();
-                    setTimeout(
-                        () => {
-                            const visibleId = this.visibleId;
-                            setTimeout(
-                                () => {
-                                    this.hide(visibleId);
-                                },
-                                10);
-                            resolve();
-                        },
-                        milliseconds);
-                },
-                0);
-        });
-    }
 }

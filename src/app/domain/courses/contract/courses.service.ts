@@ -1,15 +1,17 @@
+import { Observable } from 'rxjs/Rx';
+
 import { Course } from  './course';
 import { CourseData } from  './courseData';
 
 export interface CoursesService {
 
-    getCourses(): Promise<Array<Course>>;
+    getCourses(): Observable<Array<Course>>;
 
-    createCourse(courseData: CourseData): Promise<void>;
+    createCourse(courseData: CourseData): Observable<void>;
 
-    getCourse(courseId: number): Promise<Course>;
+    getCourse(courseId: number): Observable<Course>;
 
-    updateCourse(courseId: number, courseData: CourseData): Promise<void>;
+    updateCourse(courseId: number, courseData: CourseData): Observable<void>;
 
-    deleteCourse(courseId: number): Promise<void>;
+    deleteCourse(courseId: number): Observable<void>;
 }
