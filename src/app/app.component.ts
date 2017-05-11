@@ -52,8 +52,8 @@ export class AppComponent implements OnInit {
             ? this.pages.search
             : this.pages.login;
 
-        this.dummyWorkService.workStarted.subscribe(_ => this.loadingBlockService.workStarted());
-        this.dummyWorkService.workFinished.subscribe(_ => this.loadingBlockService.workFinished());
+        this.dummyWorkService.workStarted.subscribe(() => this.loadingBlockService.workStarted());
+        this.dummyWorkService.workFinished.subscribe(() => this.loadingBlockService.workFinished());
     }
 
     public loginSucceeded() {
