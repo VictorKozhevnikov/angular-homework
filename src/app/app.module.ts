@@ -47,11 +47,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterModule, HeaderModule } from './components';
 
 // pages
-import { SearchPageModule } from './pages';
+import { CoursesModule } from './pages';
 import { LoginModule } from './pages';
 
-// auth
-import { OfflineAuthModule } from './domain/auth/implementation/offline';
+// domain
+import { DomainModule } from './domain';
 
 import { LoadingBlockModule } from './components';
 
@@ -83,10 +83,10 @@ import { CoreModule } from './core';
         HeaderModule,
 
         // pages
-        SearchPageModule,
+        CoursesModule,
         LoginModule,
 
-        OfflineAuthModule,
+        DomainModule,
         LoadingBlockModule
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection

@@ -1,9 +1,15 @@
 <loading-block></loading-block>
 
-<courses-header (logoutRequested)="logout()" ></courses-header>
+<courses-header (logoutRequested)="logout()"></courses-header>
 
 <login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
 
-<courses-search-page *ngIf="currentPage === pages.search"></courses-search-page>
+<section class="container app__main-section" *ngIf="currentPage === pages.addCourse || currentPage === pages.search">
+
+    <course-create-page *ngIf="currentPage === pages.addCourse" (closed)="createPageClosed()"></course-create-page>
+
+    <courses-search-page *ngIf="currentPage === pages.search" (addCourseRequested)="addCourse()"></courses-search-page>
+
+</section>
 
 <courses-footer></courses-footer>

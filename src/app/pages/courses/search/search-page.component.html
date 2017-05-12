@@ -1,7 +1,3 @@
-<section class="container app__main-section">
+<toolbox (filterChanged)="filterChanged($event)" (addCourseRequested)="addCourse()"></toolbox>
 
-    <toolbox (filterChanged)="filterChanged($event)"></toolbox>
-
-    <courses-list [courses]="courses" (delete)="deleteCourse($event)"></courses-list>
-
-</section>
+<courses-list [courses]="courses" (delete)="deleteCourse($event)"></courses-list>

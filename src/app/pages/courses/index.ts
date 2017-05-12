@@ -1,1 +1,1 @@
-export * from './search';
+export * from './courses.module';

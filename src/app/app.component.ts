@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     public pages = {
         login: 'login',
         search: 'search',
+        addCourse: 'addCourse'
     };
 
     constructor(
@@ -66,6 +67,14 @@ export class AppComponent implements OnInit {
             .subscribe(() => {
                 this.currentPage = this.pages.login;
             });
+    }
+
+    public addCourse(): void {
+        this.currentPage = this.pages.addCourse;
+    }
+
+    public createPageClosed(): void {
+        this.currentPage = this.pages.search;
     }
 
 }
