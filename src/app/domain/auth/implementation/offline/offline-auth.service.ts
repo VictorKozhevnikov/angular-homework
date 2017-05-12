@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable, ReplaySubject } from 'rxjs/Rx';
 
 import { AuthService } from '../../contract';
 import { UserSession } from './user-session';
@@ -9,17 +9,13 @@ import { DummyWorkService } from '../../../../core';
 export class OfflineAuthService implements AuthService {
     public userInfo: Observable<string>;
 
-    private userInfoObserver: any;
+    private userInfoSubject: ReplaySubject<string> = new ReplaySubject<string>(1);
 
     public constructor(
         private readonly userSession: UserSession,
         private readonly dummyWorkService: DummyWorkService
     ) {
-
-        this.userInfo = new Observable<string>(observer => {
-            this.userInfoObserver = observer;
-        });
-
+        this.userInfo = this.userInfoSubject.asObservable();
     }
 
     public login(userName: string, password: string): Observable<boolean> {
@@ -27,7 +23,7 @@ export class OfflineAuthService implements AuthService {
         const loginIsSuccessful = userName === 'admin' && password === 'password';
         if (loginIsSuccessful) {
             this.userSession.beginSession(userName);
-            this.userInfoObserver.next(userName);
+            this.userInfoSubject.next(userName);
         }
 
         const result = Observable.of(loginIsSuccessful);
@@ -37,7 +33,7 @@ export class OfflineAuthService implements AuthService {
 
     public logout(): Observable<void> {
         this.userSession.endSession();
-        this.userInfoObserver.next(null);
+        this.userInfoSubject.next(null);
 
         const result = Observable.of(null);
 
