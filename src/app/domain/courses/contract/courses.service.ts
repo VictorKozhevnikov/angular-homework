@@ -7,6 +7,10 @@ export interface CoursesService {
 
     getCourses(): Observable<Array<Course>>;
 
+    getLatestCourses(params: {
+        beginDate: Date
+    });
+
     createCourse(courseData: CourseData): Observable<void>;
 
     getCourse(courseId: number): Observable<Course>;

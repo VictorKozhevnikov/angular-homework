@@ -55,4 +55,11 @@ export class OfflineCoureseRepository {
         const copy: Array<Course> = this.storage.slice();
         return Observable.of(copy);
     }
+
+    public getLaterThan(beginDate: Date): Observable<Array<Course>> {
+        const resultCourses: Array<Course> =
+            this.storage.filter(course => course.beginTime >= beginDate);
+
+        return Observable.of(resultCourses);
+    }
 }

@@ -46,8 +46,14 @@ export class SearchPageComponent implements OnInit {
     }
 
     private update(filterText: string = '') {
+        // make service parameters
+        const numberOfDays = 14;
+        const beginDate = new Date();
+        beginDate.setDate(beginDate.getDate() - numberOfDays);
+
+        // call the service
         this.coursesService
-            .getCourses()
+            .getLatestCourses({beginDate})
             .map(courses => {
                 return this.filterPipe.transform(courses, filterText);
             })

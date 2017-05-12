@@ -18,6 +18,14 @@ export class OfflineCoursesService implements CoursesService {
         return this.dummyWorkService.workOn(result);
     }
 
+    public getLatestCourses(params: {
+        beginDate: Date
+    }) {
+        const result = this.coursesRepository.getLaterThan(params.beginDate);
+
+        return this.dummyWorkService.workOn(result);
+    }
+
     public createCourse(courseData: CourseData): Observable<void> {
         const result = this.coursesRepository.create(courseData);
 
