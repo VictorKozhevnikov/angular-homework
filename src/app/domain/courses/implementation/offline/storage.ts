@@ -1,10 +1,10 @@
-import { Course } from '../../contract';
+import { InternalCourse } from './internalCourse';
 
-export let storage: Array<Course> = generateData();
+export let storage: Array<InternalCourse> = generateData();
 
-function generateData(): Array<Course> {
-    const data = [1, 2, 3, 4].map(i => {
-        return {
+function generateData(): Array<InternalCourse> {
+    const data: Array<InternalCourse> = [1, 2, 3, 4]
+        .map(i => new InternalCourse({
             id: i,
             title: 'Video course ' + i,
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '
@@ -14,15 +14,14 @@ function generateData(): Array<Course> {
             + 'in voluptate velit esse cillum dolore eu fugiat nulla pariatur. '
             + 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt '
             + 'mollit anim id est laborum',
-            duration: 28 * i,
-            beginTime: new Date(),
+            length: 28 * i,
+            beginDate: new Date(),
             isTopRated: i % 2 === 1
-        };
-    });
+        }));
 
-    data[0].beginTime.setDate(data[0].beginTime.getDate() - 8);
-    data[1].beginTime.setDate(data[1].beginTime.getDate() + 1);
-    data[2].beginTime.setDate(data[2].beginTime.getDate() - 30);
+    data[0].shiftTime(-8);
+    data[1].shiftTime(1);
+    data[2].shiftTime(-30);
 
     return data;
 }
