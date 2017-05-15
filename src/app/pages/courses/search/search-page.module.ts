@@ -14,7 +14,6 @@ import { DeleteConfirmationComponent } from './delete-confirmation';
     imports: [
         CoursesListModule,
         ToolboxModule,
-        OfflineCoursesModule,
         NgbModule.forRoot()],
     exports: [
         SearchPageComponent],

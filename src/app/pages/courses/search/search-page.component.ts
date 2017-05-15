@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Output, OnInit, Inject, EventEmitter } from '@angular/core';
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,7 @@ import { FilterPipe } from './filter';
     providers: [FilterPipe]
 })
 export class SearchPageComponent implements OnInit {
+    @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
     public courses: Array<Course>;
 
     public constructor(
@@ -22,6 +23,10 @@ export class SearchPageComponent implements OnInit {
 
     public ngOnInit() {
         this.update();
+    }
+
+    public addCourse() {
+        this.addCourseRequested.emit();
     }
 
     public deleteCourse(course: Course): void {
@@ -53,7 +58,7 @@ export class SearchPageComponent implements OnInit {
 
         // call the service
         this.coursesService
-            .getLatestCourses({beginDate})
+            .getLatestCourses({ beginDate })
             .map(courses => {
                 return this.filterPipe.transform(courses, filterText);
             })

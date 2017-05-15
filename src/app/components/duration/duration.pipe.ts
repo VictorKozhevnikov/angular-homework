@@ -6,9 +6,16 @@ export class DurationPipe implements PipeTransform {
         const hours: number = Math.floor(duration / 60);
         const minutes: number = duration % 60;
 
-        const durationString: string = hours > 0
-            ? `${hours}h ${minutes}min`
-            : `${minutes}min`;
+        let durationString: string = null;
+        if (hours === 0) {
+            durationString = `${minutes}min`;
+        } else {
+            if (minutes === 0) {
+                durationString = `${hours}h`;
+            } else {
+                durationString = `${hours}h ${minutes}min`;
+            }
+        }
 
         return durationString;
     }
