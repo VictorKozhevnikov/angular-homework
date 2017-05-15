@@ -5,7 +5,7 @@
             <div class="form-group row">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Title</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="title" placeholder="Title">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" [(ngModel)]="courseData.title">
                 </div>
             </div>
 
@@ -13,7 +13,7 @@
                 <div class="col-sm-9 offset-sm-3">
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox"> Top rated
+                            <input class="form-check-input" type="checkbox" name="topRated" [(ngModel)]="courseData.isTopRated"> Top rated
                         </label>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Description</label>
                 <div class="col-sm-9">
-                    <textarea type="text" class="form-control" id="description" placeholder="Description">
+                    <textarea type="text" class="form-control" id="description" name="description" placeholder="Description" [(ngModel)]="courseData.description">
                     </textarea>
                 </div>
             </div>
@@ -30,14 +30,14 @@
             <div class="form-group row">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Date</label>
                 <div class="col-sm-9">
-                    <input type="date" class="form-control" id="date" placeholder="Date">
+                    <input type="date" class="form-control" id="date" name="date" [(ngModel)]="courseData.beginTime">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Duration (minutes)</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="duration" placeholder="Duration">
+                    <input type="text" class="form-control" id="duration" name="duration" placeholder="Duration" [(ngModel)]="courseData.duration" >
                 </div>
             </div>
 
@@ -47,15 +47,23 @@
                     <p class="form-control-static text-muted">Skipped</p>
                 </div>
             </div>
-            
+
+            <div class="form-group row">
+                <div class="col-sm-9 offset-sm-3">
+                    <pre>{{courseData | json}}
+                    </pre>
+                </div>
+            </div>
+
+
             <div class="form-group row">
                 <div class="col-sm-9 offset-sm-3">
                     <button class="btn btn-primary" (click)="save(newCourse)">
-                Save course
-            </button>
+                        Save course
+                    </button>
                     <button class="btn btn-secondary" (click)="cancel()">
-                Cancel
-            </button>
+                        Cancel
+                    </button>
                 </div>
             </div>
         </form>
