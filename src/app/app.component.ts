@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
 import { AppState } from './app.service';
 
 import { AuthService, authServiceToken } from './domain/auth';
-import { ProfilingService, DummyWorkService } from './core';
+import { DummyWorkService } from './core';
 import { LoadingBlockService } from './components';
 
 /*
@@ -41,7 +41,6 @@ export class AppComponent implements OnInit {
         public appState: AppState,
         @Inject(authServiceToken)
         private readonly authService: AuthService,
-        private readonly profilingService: ProfilingService,
         private readonly loadingBlockService: LoadingBlockService,
         private readonly dummyWorkService: DummyWorkService
     ) { }

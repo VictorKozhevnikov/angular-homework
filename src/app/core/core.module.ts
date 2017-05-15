@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 
 import { DummyWorkModule } from './dummy-work';
-import { ProfilingModule } from './profiling';
 
 @NgModule({
     declarations: [],
-    imports: [DummyWorkModule, ProfilingModule],
-    exports: [],
+    imports: [DummyWorkModule],
+    exports: [DummyWorkModule],
     providers: [ ]
 })
 export class CoreModule {
