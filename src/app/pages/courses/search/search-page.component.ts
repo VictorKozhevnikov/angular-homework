@@ -1,4 +1,7 @@
 import { Component, Output, OnInit, Inject, EventEmitter } from '@angular/core';
+
+import { Subject, Observable } from 'rxjs/Rx';
+
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +15,10 @@ import { OrderByPipe } from '../../../components/order-by';
 })
 export class SearchPageComponent implements OnInit {
     @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
-    public courses: Array<Course>;
+    public courses: Observable<Array<Course>>;
+
+    private listChanged: Subject<void> = new Subject<void>();
+    private filters: Subject<string> = new Subject<string>();
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -24,7 +30,26 @@ export class SearchPageComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.update();
+        const numberOfDays = 14;
+
+        this.courses = this.listChanged
+            .startWith(null)
+            .flatMap(() => {
+                // make service parameters
+                const beginDate = new Date();
+                beginDate.setDate(beginDate.getDate() - numberOfDays);
+                // get courses list
+                return this.coursesService.getLatestCourses({ beginDate });
+            })
+            .map(items => {
+                // need to cast sinse orderByPipe is generic
+                return <Array<Course>> this.orderByPipe.transform(items, 'beginTime', 'asc');
+            })
+            .combineLatest(
+                this.filters.startWith(''),
+                (items, filterText) => {
+                    return this.filterPipe.transform(items, filterText);
+                });
     }
 
     public addCourse() {
@@ -42,33 +67,13 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
-                        .subscribe(() => this.update());
+                        .subscribe(() => this.listChanged.next());
                 }
             });
 
     }
 
     private filterChanged(filterText: string): void {
-        this.update(filterText);
-    }
-
-    private update(filterText: string = '') {
-        // make service parameters
-        const numberOfDays = 14;
-        const beginDate = new Date();
-        beginDate.setDate(beginDate.getDate() - numberOfDays);
-
-        // call the service
-        this.coursesService
-            .getLatestCourses({ beginDate })
-            .map(courses => {
-                return this.orderByPipe.transform(courses, 'beginTime', 'asc');
-            })
-            .map(courses => {
-                return this.filterPipe.transform(courses, filterText);
-            })
-            .subscribe(courses => {
-                this.courses = courses;
-            });
+        this.filters.next(filterText);
     }
 }

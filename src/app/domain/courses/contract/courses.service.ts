@@ -9,7 +9,7 @@ export interface CoursesService {
 
     getLatestCourses(params: {
         beginDate: Date
-    });
+    }): Observable<Array<Course>>;
 
     createCourse(courseData: CourseData): Observable<void>;
 
