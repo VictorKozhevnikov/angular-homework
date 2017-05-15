@@ -3,11 +3,12 @@ import { Course, CoursesService, coursesServiceToken } from '../../../domain/cou
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from './filter';
+import { OrderByPipe } from '../../../components/order-by';
 
 @Component({
     selector: 'courses-search-page',
     template: require('./search-page.component.html'),
-    providers: [FilterPipe]
+    providers: [FilterPipe, OrderByPipe]
 })
 export class SearchPageComponent implements OnInit {
     @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
@@ -17,7 +18,8 @@ export class SearchPageComponent implements OnInit {
         @Inject(coursesServiceToken)
         private readonly coursesService: CoursesService,
         private readonly ngbModal: NgbModal,
-        private readonly filterPipe: FilterPipe
+        private readonly filterPipe: FilterPipe,
+        private readonly orderByPipe: OrderByPipe
     ) {
     }
 
@@ -59,6 +61,9 @@ export class SearchPageComponent implements OnInit {
         // call the service
         this.coursesService
             .getLatestCourses({ beginDate })
+            .map(courses => {
+                return this.orderByPipe.transform(courses, 'beginTime', 'asc');
+            })
             .map(courses => {
                 return this.filterPipe.transform(courses, filterText);
             })
