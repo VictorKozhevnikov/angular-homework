@@ -1,9 +1,40 @@
 {
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
+    "principals": [
+        {
+            "id": 1,
+            "userId": 1,
+            "login": "admin",
+            "password": "password",
+            "token": "ce39499af2674cf48722838b12c6afb7"
+        },
+        {
+            "id": 2,
+            "userId": 2,
+            "login": "Victor",
+            "password": "Victor",
+            "token": "144df1ecf80c4adcb1a97ec631fb4bab"
+        },
+        {
+            "id": 3,
+            "userId": 3,
+            "login": "Nastya",
+            "password": "Nastya",
+            "token": "6ef5321d0d754fcd8939c46de99bfff4"
+        }
+    ],
+
+    "users": [
+        {
+            "id": 1,
+            "name": "admin"
+        },
+        {
+            "id": 2,
+            "name": "Victor"
+        },
+        {
+            "id": 3,
+            "name": "Nastya"
+        }
+    ]
 }
