@@ -16,11 +16,10 @@
 
             <span class="navbar-text">
                 <i class="fa fa-user"></i>
-                <span *ngIf="isAuthenticated">{{userName}}</span>
-                <span *ngIf="isAnonymous">Anonymous</span>
+                <span >{{userName | async}}</span>
             </span>
 
-            <ul class="navbar-nav" *ngIf="isAuthenticated">
+            <ul class="navbar-nav" *ngIf="isAuthenticated | async">
                 <li class="nav-item">
                     <a class="nav-link" href="#" (click)="logout()">Log out</a>
                 </li>

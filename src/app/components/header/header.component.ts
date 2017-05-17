@@ -5,8 +5,8 @@ import {
     OnInit,
     Inject,
     ChangeDetectionStrategy,
-    ChangeDetectorRef
 } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
 
@@ -19,32 +19,21 @@ import { AuthService, authServiceToken } from '../../domain/auth';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
-    public isAnonymous: boolean;
-    public isAuthenticated: boolean;
-    public userName: string;
+    public userName: Observable<string>;
+    public isAuthenticated: Observable<boolean>;
 
     @Output() public logoutRequested = new EventEmitter();
 
     public constructor(
         @Inject(authServiceToken)
-        private readonly authService: AuthService,
-        private readonly changeDetector: ChangeDetectorRef
+        private readonly authService: AuthService
     ) { }
 
     public ngOnInit(): void {
-        // first time get user info from service
-        this.isAuthenticated = this.authService.IsAuthenticated();
-        this.isAnonymous = !this.authService.IsAuthenticated();
-        this.userName = this.authService.GetUserInfo();
-
-        this.authService.userInfo.subscribe(userName => {
-            // other times get user info from observable
-            this.userName = userName;
-            this.isAuthenticated = userName !== null;
-            this.isAnonymous = userName == null;
-
-            this.changeDetector.markForCheck();
-        });
+        this.userName = this.authService.userInfo
+            .map(name => name || 'Anonymous');
+        this.isAuthenticated = this.authService.userInfo
+            .map(name => !!name);
     }
 
     private logout(): void {
