@@ -3,7 +3,8 @@ import {
     Inject,
     Output,
     EventEmitter,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    ChangeDetectorRef
 } from '@angular/core';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
@@ -21,7 +22,8 @@ export class LoginComponent {
 
     public constructor(
         @Inject(authServiceToken)
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly changeDetector: ChangeDetectorRef
     ) { }
 
     public login(userName: string, password: string) {
@@ -29,6 +31,7 @@ export class LoginComponent {
             .login(userName, password)
             .do(loginIsSuccessful => {
                 this.lastLoginFailed = !loginIsSuccessful;
+                this.changeDetector.markForCheck();
             })
             .subscribe(loginIsSuccessful => {
                 if (loginIsSuccessful) {

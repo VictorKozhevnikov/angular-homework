@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, ReplaySubject } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 import { AuthService } from '../../contract';
 
 import { DummyWorkService } from '../../../../core';
 
+import { Principal } from './principal';
 import { PrincipalsService } from './principals.service';
 import { UserSession } from './user-session';
 
 @Injectable()
 export class HttpAuthService implements AuthService {
     public userInfo: Observable<string>;
+
+    private readonly loginAttempt = new Subject<Principal>();
 
     public constructor(
         private readonly principalsService: PrincipalsService,
@@ -20,6 +23,10 @@ export class HttpAuthService implements AuthService {
     ) {
         this.userInfo = this.userSession.currentPrincipal
             .map(principal => principal ? principal.login : null);
+
+        this.loginAttempt
+            .filter(principal => principal != null)
+            .subscribe(principal => this.userSession.beginSession(principal));
     }
 
     public login(userName: string, password: string): Observable<boolean> {
@@ -29,8 +36,8 @@ export class HttpAuthService implements AuthService {
                 login: userName,
                 password
             })
-            .do(p => this.userSession.beginSession(p))
-            .map(() => true);
+            .do(principal => this.loginAttempt.next(principal))
+            .map(principal => principal != null);
 
         return this.dummyWorkService.workOn(result);
     }

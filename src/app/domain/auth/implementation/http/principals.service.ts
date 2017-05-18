@@ -8,7 +8,7 @@ import { Principal } from './principal';
 
 @Injectable()
 export class PrincipalsService {
-    private static readonly baseUrl: string = 'http://localhost:3000';
+    // private static readonly baseUrl: string = 'http://localhost:3000';
 
     public constructor(
         private readonly http: Http,
@@ -23,13 +23,18 @@ export class PrincipalsService {
 
         const request: Request = new Request({
             method: RequestMethod.Get,
-            url: PrincipalsService.baseUrl + '/principals',
+            url: '/principals',
             params
         });
 
         const result: Observable<Principal> = this.http
             .request(request)
-            .map(response => response.json());
+            .map(response => response.json())
+            .map(principals =>
+                principals.length === 1
+                    ? principals[0]
+                    : null
+            );
 
         return result;
     }
