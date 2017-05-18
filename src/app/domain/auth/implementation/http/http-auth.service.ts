@@ -11,7 +11,6 @@ import { UserSession } from './user-session';
 
 @Injectable()
 export class HttpAuthService implements AuthService {
-    public userInfo: Observable<string>;
     public currentPrincipal: Observable<Principal>;
 
     private readonly loginAttempt = new Subject<HttpPrincipal>();
@@ -21,9 +20,6 @@ export class HttpAuthService implements AuthService {
         private readonly userSession: UserSession,
         private readonly dummyWorkService: DummyWorkService
     ) {
-        this.userInfo = this.userSession.currentPrincipal
-            .map(principal => principal ? principal.login : null);
-
         this.currentPrincipal = this.userSession.currentPrincipal
             .map(httpPrincipal => {
                 return httpPrincipal
@@ -63,11 +59,5 @@ export class HttpAuthService implements AuthService {
 
     public IsAuthenticated(): boolean {
         return this.userSession.hasSession();
-    }
-
-    public GetUserInfo(): string {
-        return this.userSession.hasSession()
-            ? this.userSession.getPrincipal().login
-            : null;
     }
 }
