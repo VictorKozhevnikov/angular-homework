@@ -4,7 +4,6 @@ import { coursesServiceToken } from '../../contract';
 
 import { CoursesHttpService } from './courses-http.service';
 
-
 @NgModule({
     declarations: [],
     imports: [],

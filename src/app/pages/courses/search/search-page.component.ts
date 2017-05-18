@@ -5,13 +5,10 @@ import { Subject, Observable } from 'rxjs/Rx';
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FilterPipe } from './filter';
-import { OrderByPipe } from '../../../components/order-by';
 
 @Component({
     selector: 'courses-search-page',
-    template: require('./search-page.component.html'),
-    providers: [FilterPipe, OrderByPipe]
+    template: require('./search-page.component.html')
 })
 export class SearchPageComponent implements OnInit {
     @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
@@ -23,9 +20,7 @@ export class SearchPageComponent implements OnInit {
     public constructor(
         @Inject(coursesServiceToken)
         private readonly coursesService: CoursesService,
-        private readonly ngbModal: NgbModal,
-        private readonly filterPipe: FilterPipe,
-        private readonly orderByPipe: OrderByPipe
+        private readonly ngbModal: NgbModal
     ) {
     }
 

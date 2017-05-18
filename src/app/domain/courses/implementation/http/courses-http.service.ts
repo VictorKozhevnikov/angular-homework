@@ -47,17 +47,6 @@ export class CoursesHttpService implements CoursesService {
         return result;
     }
 
-    private mapToCourse(object: any): Course {
-        return {
-            id: object.id,
-            title: object.title,
-            isTopRated: object.isTopRated,
-            description: object.description,
-            beginTime: object.beginTime,
-            duration: object.duration
-        };
-    }
-
     public createCourse(courseData: CourseData): Observable<void> {
         throw new Error('not implemented');
     }
@@ -72,5 +61,16 @@ export class CoursesHttpService implements CoursesService {
 
     public deleteCourse(courseId: number): Observable<void> {
         throw new Error('not implemented');
+    }
+
+    private mapToCourse(object: any): Course {
+        return {
+            id: object.id,
+            title: object.title,
+            isTopRated: object.isTopRated,
+            description: object.description,
+            beginTime: object.beginTime,
+            duration: object.duration
+        };
     }
 }
