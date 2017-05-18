@@ -1,4 +1,4 @@
-export interface Principal {
+export interface HttpPrincipal {
     id: number;
     userId: number;
     login: string;
