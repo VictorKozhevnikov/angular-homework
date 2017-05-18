@@ -9,6 +9,7 @@ import {
 import { Observable } from 'rxjs/Rx';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
+import { UsersService, usersServiceToken } from '../../domain/users';
 
 @Component({
     selector: 'courses-header',
@@ -25,15 +26,21 @@ export class HeaderComponent implements OnInit {
     @Output() public logoutRequested = new EventEmitter();
 
     public constructor(
-        @Inject(authServiceToken)
-        private readonly authService: AuthService
+        @Inject(authServiceToken) private readonly authService: AuthService,
+        @Inject(usersServiceToken) private readonly usersService: UsersService
     ) { }
 
     public ngOnInit(): void {
-        this.userName = this.authService.userInfo
-            .map(name => name || 'Anonymous');
-        this.isAuthenticated = this.authService.userInfo
-            .map(name => !!name);
+        this.userName = this.authService.currentPrincipal
+            .switchMap(principal => principal
+                ? this.usersService.getUser(principal.userId)
+                : Observable.of(null))
+            .map(user => user
+                ? user.name
+                : 'Anonymous');
+
+        this.isAuthenticated = this.authService.currentPrincipal
+            .map(principal => !!principal);
     }
 
     private logout(): void {

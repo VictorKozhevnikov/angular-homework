@@ -3,40 +3,34 @@ import { Http, RequestMethod, Request, URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 
-import { Credentials } from './credentials';
-import { HttpPrincipal } from './http-principal';
+import { User, UsersService } from '../../contract';
 
 @Injectable()
-export class PrincipalsService {
-    // private static readonly baseUrl: string = 'http://localhost:3000';
-
+export class UsersHttpService implements UsersService {
     public constructor(
         private readonly http: Http,
     ) {
     }
 
-    public getPrincipal(credentials: Credentials): Observable<HttpPrincipal> {
-
+    public getUser(id: number): Observable<User> {
         const params: URLSearchParams = new URLSearchParams();
-        params.set('login', credentials.login);
-        params.set('password', credentials.password);
+        params.set('id', id.toString());
 
         const request: Request = new Request({
             method: RequestMethod.Get,
-            url: '/principals',
+            url: '/users',
             params
         });
 
-        const result: Observable<HttpPrincipal> = this.http
+        const result: Observable<User> = this.http
             .request(request)
             .map(response => response.json())
-            .map(principals =>
-                principals.length === 1
-                    ? principals[0]
+            .map(users =>
+                users.length === 1
+                    ? users[0]
                     : null
             );
 
         return result;
     }
-
 }
