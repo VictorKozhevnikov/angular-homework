@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 
 import { HttpAuthModule } from './auth';
 import { UsersHttpModule } from './users';
-import { OfflineCoursesModule } from './courses';
+import { CoursesHttpModule } from './courses';
 
 @NgModule({
     declarations: [],
     imports: [
         HttpAuthModule,
         UsersHttpModule,
-        OfflineCoursesModule
+        CoursesHttpModule
     ],
     exports: [
         HttpAuthModule,
         UsersHttpModule,
-        OfflineCoursesModule
+        CoursesHttpModule
     ],
     entryComponents: []
 })

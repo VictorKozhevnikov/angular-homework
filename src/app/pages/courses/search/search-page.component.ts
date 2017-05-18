@@ -32,24 +32,21 @@ export class SearchPageComponent implements OnInit {
     public ngOnInit() {
         const numberOfDays = 14;
 
-        this.courses = this.listChanged
-            .startWith(null)
-            .flatMap(() => {
+        this.courses = this.filters
+            .startWith('')
+            .debounceTime(500)
+            .map(text => text.trim())
+            .distinctUntilChanged()
+            .switchMap(text => {
                 // make service parameters
                 const beginDate = new Date();
                 beginDate.setDate(beginDate.getDate() - numberOfDays);
-                // get courses list
-                return this.coursesService.getLatestCourses({ beginDate });
-            })
-            .map(items => {
-                // need to cast sinse orderByPipe is generic
-                return <Array<Course>> this.orderByPipe.transform(items, 'beginTime', 'asc');
-            })
-            .combineLatest(
-                this.filters.startWith(''),
-                (items, filterText) => {
-                    return this.filterPipe.transform(items, filterText);
+
+                return this.coursesService.searchCourses({
+                    text,
+                    beginDate
                 });
+            });
     }
 
     public addCourse() {
