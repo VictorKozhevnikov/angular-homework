@@ -1,3 +1,7 @@
 <toolbox (filterChanged)="filterChanged($event)" (addCourseRequested)="addCourse()"></toolbox>
 
 <courses-list [courses]="courses | async" (delete)="deleteCourse($event)"></courses-list>
+
+<div class="form-group text-center">
+    <button class="btn btn-secondary" (click)="showMoreCourses()">Show more courses</button>
+</div>

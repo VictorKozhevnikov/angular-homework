@@ -16,6 +16,7 @@ export class SearchPageComponent implements OnInit {
 
     private listChanged: Subject<void> = new Subject<void>();
     private filters: Subject<string> = new Subject<string>();
+    private more: Subject<void> = new Subject<void>();
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -26,22 +27,50 @@ export class SearchPageComponent implements OnInit {
 
     public ngOnInit() {
         const numberOfDays = 14;
+        const pageSize = 5;
 
-        this.courses = this.filters
+        const filters = this.filters
             .startWith('')
             .debounceTime(500)
             .map(text => text.trim())
-            .distinctUntilChanged()
-            .switchMap(text => {
-                // make service parameters
-                const beginDate = new Date();
-                beginDate.setDate(beginDate.getDate() - numberOfDays);
+            .distinctUntilChanged();
 
-                return this.coursesService.searchCourses({
-                    text,
-                    beginDate
-                });
+        this.courses = filters
+            .switchMap(text => {
+
+                const pagination = this.more
+                    .startWith(null)
+                    .map(() => pageSize)
+                    .scan(
+                    (page, numberOfItems) => {
+                        page.skip += page.take;
+                        page.take = numberOfItems;
+                        return page;
+                    },
+                    { skip: 0, take: 0 });
+
+                const data = pagination
+                    .map(page => {
+                        // make service parameters
+                        const beginDate = new Date();
+                        beginDate.setDate(beginDate.getDate() - numberOfDays);
+
+                        return this.coursesService.searchCourses({
+                            text,
+                            beginDate,
+                            offset: page.skip,
+                            pageSize: page.take
+                        });
+                    })
+                    .concatAll()
+                    .scan((currentItems, newItems) => currentItems.concat(newItems), []);
+
+                return data.takeUntil(this.filters);
             });
+    }
+
+    public showMoreCourses(): void {
+        this.more.next();
     }
 
     public addCourse() {
