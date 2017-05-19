@@ -1,5 +1,6 @@
-import { Component, Output, OnInit, Inject, EventEmitter } from '@angular/core';
+import { Component, Output, OnInit, OnDestroy, Inject, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Subject, Observable } from 'rxjs/Rx';
 
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
@@ -12,7 +13,7 @@ import { Filters } from './filters';
     selector: 'courses-search-page',
     template: require('./search-page.component.html')
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit, OnDestroy {
     private static readonly pageSize: number = 5;
     private static readonly daysInAdvance: number = 14;
     private static readonly initialFilters: Filters = {
@@ -26,6 +27,8 @@ export class SearchPageComponent implements OnInit {
     private listChanged = new Subject<void>();
     private filters = new Subject<Filters>();
     private more = new Subject<void>();
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -60,6 +63,11 @@ export class SearchPageComponent implements OnInit {
         this.more.next();
     }
 
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
     public addCourse() {
         this.addCourseRequested.emit();
     }
@@ -75,9 +83,14 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
+<<<<<<< HEAD
                         .subscribe(() => {
                             this.listChanged.next();
                         });
+=======
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe(() => this.listChanged.next());
+>>>>>>> homework/homework-6
                 }
             });
 

@@ -22,6 +22,7 @@ export class LoadingBlockService {
 
         const visibleSubject = new ReplaySubject<boolean>(1);
 
+        // subscribe forever - it's a service anyway
         visibleObservable.subscribe(visibleSubject);
 
         this.blockIsVisible = visibleSubject.asObservable();
