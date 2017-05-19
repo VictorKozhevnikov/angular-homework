@@ -36,8 +36,8 @@ export class SearchPageComponent implements OnInit {
 
     public ngOnInit() {
         const paginationState: Observable<PaginationState<Course>> = this.filters
-            .combineLatest(this.listChanged, (filters, _) => filters)
             .startWith(SearchPageComponent.initialFilters)
+            .combineLatest(this.listChanged.startWith(null), (filters, _) => filters)
             .switchMap(filters => {
 
                 const pagination = new PaginationMore({
@@ -75,7 +75,9 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
-                        .subscribe(() => this.listChanged.next());
+                        .subscribe(() => {
+                            this.listChanged.next();
+                        });
                 }
             });
 

@@ -60,7 +60,16 @@ export class CoursesHttpService implements CoursesService {
     }
 
     public deleteCourse(courseId: number): Observable<void> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Delete,
+            url: '/courses/' + courseId.toString()
+        });
+
+        const result: Observable<void> = this.http
+            .request(request)
+            .map(() => {});
+
+        return result;
     }
 
     private mapToCourse(object: any): Course {
