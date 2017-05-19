@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class SearchPageComponent implements OnInit {
     @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
     public courses: Observable<Array<Course>>;
+    public hasMore: Observable<boolean>;
 
     private listChanged: Subject<void> = new Subject<void>();
     private filters: Subject<string> = new Subject<string>();
@@ -29,44 +30,82 @@ export class SearchPageComponent implements OnInit {
         const numberOfDays = 14;
         const pageSize = 5;
 
+        const beginLoading = new Subject<void>();
+        const endLoading = new Subject<void>();
+        const coursesService = this.coursesService;
+
         const filters = this.filters
             .startWith('')
-            .debounceTime(500)
+            .debounceTime(300)
             .map(text => text.trim())
             .distinctUntilChanged();
 
-        this.courses = filters
+        const pagination = this.more
+            .startWith(null)
+            .map(() => pageSize)
+            .scan(
+            (page, numberOfItems) => {
+                page.skip += page.take;
+                page.take = numberOfItems;
+                return page;
+            },
+            { skip: 0, take: 0 });
+
+        function fetch(args: {
+            query: {
+                text: string;
+            };
+            page: {
+                skip: number;
+                take: number;
+            }
+        }): Observable<{
+            courses: Array<Course>;
+            hasNext: boolean;
+        }> {
+            // make service parameters
+            const beginDate = new Date();
+            beginDate.setDate(beginDate.getDate() - numberOfDays);
+
+            return coursesService
+                .searchCourses({
+                    text: args.query.text,
+                    beginDate,
+                    offset: args.page.skip,
+                    pageSize: args.page.take + 1
+                })
+                .map(courses => {
+                    const hasNext = courses.length > args.page.take;
+                    courses.pop();
+                    return {
+                        courses,
+                        hasNext
+                    };
+                });
+        }
+
+        const paginationState = filters
             .switchMap(text => {
 
-                const pagination = this.more
-                    .startWith(null)
-                    .map(() => pageSize)
-                    .scan(
-                    (page, numberOfItems) => {
-                        page.skip += page.take;
-                        page.take = numberOfItems;
-                        return page;
-                    },
-                    { skip: 0, take: 0 });
-
-                const data = pagination
-                    .map(page => {
-                        // make service parameters
-                        const beginDate = new Date();
-                        beginDate.setDate(beginDate.getDate() - numberOfDays);
-
-                        return this.coursesService.searchCourses({
-                            text,
-                            beginDate,
-                            offset: page.skip,
-                            pageSize: page.take
-                        });
-                    })
+                return pagination
+                    .map(page => fetch({ query: { text }, page }))
                     .concatAll()
-                    .scan((currentItems, newItems) => currentItems.concat(newItems), []);
+                    .scan(
+                    (state, fetchResult) => {
+                        state.items = state.items.concat(fetchResult.courses);
+                        state.hasNext = fetchResult.hasNext;
+                        return state;
+                    },
+                    {
+                        items: [],
+                        hasNext: false
+                    });
+            })
+            .share();
 
-                return data.takeUntil(this.filters);
-            });
+        // now I need to extract courses and hasNext into separate observables
+        this.courses = paginationState.map(state => state.items);
+        this.hasMore = paginationState.map(state => state.hasNext);
     }
 
     public showMoreCourses(): void {

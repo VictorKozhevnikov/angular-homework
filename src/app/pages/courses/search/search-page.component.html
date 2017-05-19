@@ -2,6 +2,6 @@
 
 <courses-list [courses]="courses | async" (delete)="deleteCourse($event)"></courses-list>
 
-<div class="form-group text-center">
+<div class="form-group text-center" *ngIf="hasMore | async">
     <button class="btn btn-secondary" (click)="showMoreCourses()">Show more courses</button>
 </div>
