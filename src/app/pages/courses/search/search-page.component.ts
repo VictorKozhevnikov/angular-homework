@@ -1,4 +1,4 @@
-import { Component, Output, OnInit, Inject, EventEmitter } from '@angular/core';
+import { Component, Output, OnInit, OnDestroy, Inject, EventEmitter } from '@angular/core';
 
 import { Subject, Observable } from 'rxjs/Rx';
 
@@ -13,12 +13,14 @@ import { OrderByPipe } from '../../../components/order-by';
     template: require('./search-page.component.html'),
     providers: [FilterPipe, OrderByPipe]
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit, OnDestroy {
     @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
     public courses: Observable<Array<Course>>;
 
     private listChanged: Subject<void> = new Subject<void>();
     private filters: Subject<string> = new Subject<string>();
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -52,6 +54,11 @@ export class SearchPageComponent implements OnInit {
                 });
     }
 
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
     public addCourse() {
         this.addCourseRequested.emit();
     }
@@ -67,6 +74,7 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
+                        .takeUntil(this.ngUnsubscribe)
                         .subscribe(() => this.listChanged.next());
                 }
             });
