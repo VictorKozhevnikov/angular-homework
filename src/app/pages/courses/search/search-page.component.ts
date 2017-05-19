@@ -37,15 +37,7 @@ export class SearchPageComponent implements OnInit {
     public ngOnInit() {
         const paginationState: Observable<PaginationState<Course>> = this.filters
             .startWith(SearchPageComponent.initialFilters)
-            // .combineLatest(this.listChanged, (filters, _) => {
-            //     console.log('filters = ');
-            //     console.log(filters);
-
-            //     console.log('_ = ');
-            //     console.log(_);
-
-            //     return filters;
-            // })
+            .combineLatest(this.listChanged.startWith(null), (filters, _) => filters)
             .switchMap(filters => {
 
                 const pagination = new PaginationMore({
