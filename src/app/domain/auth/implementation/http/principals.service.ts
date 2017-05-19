@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestMethod, Request, URLSearchParams } from '@angular/http';
+import { RequestMethod, Request, URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
+
+import { AuthorizedHttp } from '../../../http';
 
 import { Credentials } from './credentials';
 import { HttpPrincipal } from './http-principal';
@@ -11,7 +13,7 @@ export class PrincipalsService {
     // private static readonly baseUrl: string = 'http://localhost:3000';
 
     public constructor(
-        private readonly http: Http,
+        private readonly http: AuthorizedHttp,
     ) {
     }
 

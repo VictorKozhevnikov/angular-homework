@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestMethod, Request, URLSearchParams } from '@angular/http';
+import { RequestMethod, Request, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import * as moment from 'moment';
+
+import { AuthorizedHttp } from '../../../http';
 
 import { Course, CourseData, CoursesService, CoursesSearchParams } from '../../contract';
 
 @Injectable()
 export class CoursesHttpService implements CoursesService {
     public constructor(
-        private readonly http: Http
+        private readonly http: AuthorizedHttp
     ) { }
 
     public searchCourses(searchParams: CoursesSearchParams): Observable<Array<Course>> {

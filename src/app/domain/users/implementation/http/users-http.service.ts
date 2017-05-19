@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestMethod, Request, URLSearchParams } from '@angular/http';
+import { RequestMethod, Request, URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
+
+import { AuthorizedHttp } from '../../../http';
 
 import { User, UsersService } from '../../contract';
 
 @Injectable()
 export class UsersHttpService implements UsersService {
     public constructor(
-        private readonly http: Http,
+        private readonly http: AuthorizedHttp,
     ) {
     }
 

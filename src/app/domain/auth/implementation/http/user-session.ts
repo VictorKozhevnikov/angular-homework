@@ -41,8 +41,8 @@ export class UserSession {
         const token = localStorage.getItem('principal_token');
 
         return {
-            id: parseInt(idString),
-            userId: parseInt(userIdString),
+            id: parseInt(idString, 10),
+            userId: parseInt(userIdString, 10),
             login,
             token
         };
