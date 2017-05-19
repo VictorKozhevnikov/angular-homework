@@ -36,9 +36,8 @@ export class SearchPageComponent implements OnInit {
 
     public ngOnInit() {
         const paginationState: Observable<PaginationState<Course>> = this.filters
+            .combineLatest(this.listChanged, (filters, _) => filters)
             .startWith(SearchPageComponent.initialFilters)
-            .debounceTime(300)
-            .distinctUntilChanged()
             .switchMap(filters => {
 
                 const pagination = new PaginationMore({
