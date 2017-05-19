@@ -4,11 +4,12 @@
 import {
     Component,
     OnInit,
+    OnDestroy,
     ViewEncapsulation,
     Inject
 } from '@angular/core';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 import { AppState } from './app.service';
 
@@ -28,7 +29,7 @@ import { LoadingBlockService } from './components';
         './app.component.scss'
     ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
     public currentPage: string;
 
     public pages = {
@@ -36,6 +37,8 @@ export class AppComponent implements OnInit {
         search: 'search',
         addCourse: 'addCourse'
     };
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     constructor(
         public appState: AppState,
@@ -45,15 +48,24 @@ export class AppComponent implements OnInit {
         private readonly dummyWorkService: DummyWorkService
     ) { }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         console.log('Initial App State', this.appState.state);
 
         this.currentPage = this.authService.IsAuthenticated()
             ? this.pages.search
             : this.pages.login;
 
-        this.dummyWorkService.workStarted.subscribe(() => this.loadingBlockService.workStarted());
-        this.dummyWorkService.workFinished.subscribe(() => this.loadingBlockService.workFinished());
+        this.dummyWorkService.workStarted
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => this.loadingBlockService.workStarted());
+        this.dummyWorkService.workFinished
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => this.loadingBlockService.workFinished());
+    }
+
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     public loginSucceeded() {
@@ -63,6 +75,7 @@ export class AppComponent implements OnInit {
     public logout() {
         this.authService
             .logout()
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
                 this.currentPage = this.pages.login;
             });
