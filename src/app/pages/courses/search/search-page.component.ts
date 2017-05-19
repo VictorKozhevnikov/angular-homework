@@ -1,21 +1,31 @@
 import { Component, Output, OnInit, Inject, EventEmitter } from '@angular/core';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, Observable } from 'rxjs/Rx';
 
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
+import { PaginationMore, defaultFetch, Page, PaginationState } from '../../../core/pagination/more';
+
 import { DeleteConfirmationComponent } from './delete-confirmation';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Filters } from './filters';
 
 @Component({
     selector: 'courses-search-page',
     template: require('./search-page.component.html')
 })
 export class SearchPageComponent implements OnInit {
-    @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
-    public courses: Observable<Array<Course>>;
+    private static readonly pageSize: number = 5;
+    private static readonly daysInAdvance: number = 14;
+    private static readonly initialFilters: Filters = {
+        text: ''
+    };
 
-    private listChanged: Subject<void> = new Subject<void>();
-    private filters: Subject<string> = new Subject<string>();
+    @Output() public addCourseRequested = new EventEmitter<void>();
+    public courses: Observable<Array<Course>> = null;
+    public hasMore: Observable<boolean> = null;
+
+    private listChanged = new Subject<void>();
+    private filters = new Subject<Filters>();
+    private more = new Subject<void>();
 
     public constructor(
         @Inject(coursesServiceToken)
@@ -25,23 +35,29 @@ export class SearchPageComponent implements OnInit {
     }
 
     public ngOnInit() {
-        const numberOfDays = 14;
+        const paginationState: Observable<PaginationState<Course>> = this.filters
+            .combineLatest(this.listChanged, (filters, _) => filters)
+            .startWith(SearchPageComponent.initialFilters)
+            .switchMap(filters => {
 
-        this.courses = this.filters
-            .startWith('')
-            .debounceTime(500)
-            .map(text => text.trim())
-            .distinctUntilChanged()
-            .switchMap(text => {
-                // make service parameters
-                const beginDate = new Date();
-                beginDate.setDate(beginDate.getDate() - numberOfDays);
-
-                return this.coursesService.searchCourses({
-                    text,
-                    beginDate
+                const pagination = new PaginationMore({
+                    query: filters,
+                    pageSize: SearchPageComponent.pageSize,
+                    fetch: defaultFetch((q: Filters, p: Page) => this.fetch(q, p)),
+                    more: this.more
                 });
-            });
+
+                return pagination.paginationState;
+            })
+            .share();
+
+        // now I need to extract courses and hasNext into separate observables
+        this.courses = paginationState.map(state => state.items);
+        this.hasMore = paginationState.map(state => state.hasMore);
+    }
+
+    public showMoreCourses(): void {
+        this.more.next();
     }
 
     public addCourse() {
@@ -66,6 +82,22 @@ export class SearchPageComponent implements OnInit {
     }
 
     private filterChanged(filterText: string): void {
-        this.filters.next(filterText);
+        this.filters.next({
+            text: filterText
+        });
+    }
+
+    private fetch(query: Filters, page: Page): Observable<Array<Course>> {
+
+        // make service parameters
+        const beginDate = new Date();
+        beginDate.setDate(beginDate.getDate() - SearchPageComponent.daysInAdvance);
+
+        return this.coursesService.searchCourses({
+            text: query.text,
+            beginDate,
+            offset: page.skip,
+            pageSize: page.take
+        });
     }
 }
