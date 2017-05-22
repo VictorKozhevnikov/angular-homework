@@ -1,11 +1,17 @@
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <form novalidate>
+        <form novalidate [formGroup]="courseForm">
             <h1>Add new course</h1>
-            <div class="form-group row">
+            <div class="form-group row" [class.has-danger]="courseForm.get('title').touched && courseForm.get('title').invalid">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Title</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" [(ngModel)]="courseData.title">
+                    <input type="text" class="form-control" placeholder="Title" formControlName="title">
+                    <div class="form-control-feedback" [hidden]="!(courseForm.get('title').touched && courseForm.get('title').invalid && courseForm.get('title').errors.required)" >
+                        Title is required
+                    </div>
+                    <div class="form-control-feedback" *ngIf="courseForm.get('title').touched && courseForm.get('title').invalid && courseForm.get('title').errors.maxlength">
+                        Title must be {{courseForm.get('title').errors.maxlength.requiredLength}} characters or shorter
+                    </div>
                 </div>
             </div>
 
@@ -13,31 +19,37 @@
                 <div class="col-sm-9 offset-sm-3">
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="topRated" [(ngModel)]="courseData.isTopRated"> Top rated
+                            <input type="checkbox" class="form-check-input" formControlName="isTopRated"> Top rated
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" [class.has-danger]="courseForm.get('description').touched && courseForm.get('description').invalid">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Description</label>
                 <div class="col-sm-9">
-                    <textarea type="text" class="form-control" id="description" name="description" placeholder="Description" [(ngModel)]="courseData.description">
+                    <textarea type="text" rows="10" class="form-control" placeholder="Description" formControlName="description">
                     </textarea>
+                    <div class="form-control-feedback" [hidden]="!(courseForm.get('description').touched && courseForm.get('description').invalid && courseForm.get('description').errors.required)" >
+                        Description is required
+                    </div>
+                    <div class="form-control-feedback" *ngIf="courseForm.get('description').touched && courseForm.get('description').invalid && courseForm.get('description').errors.maxlength">
+                        Description must be {{courseForm.get('description').errors.maxlength.requiredLength}} characters or shorter
+                    </div>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Date</label>
                 <div class="col-sm-9">
-                    <input type="date" class="form-control" id="date" name="date" [(ngModel)]="courseData.beginTime">
+                    <input type="date" class="form-control" id="date" name="date">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Duration (minutes)</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="duration" name="duration" placeholder="Duration" [(ngModel)]="courseData.duration" >
+                    <input type="text" class="form-control" id="duration" name="duration" placeholder="Duration">
                 </div>
                 <div class="col-sm-3">
                     <p class="form-control-static">{{courseData.duration | myDuration}}</p>
@@ -58,10 +70,14 @@
                 </div>
             </div>-->
 
+            <div class="form-group"> 
+                <pre>{{courseForm.value | json}}</pre>
+            </div>
+
 
             <div class="form-group row">
                 <div class="col-sm-9 offset-sm-3">
-                    <button class="btn btn-primary" (click)="save(newCourse)">
+                    <button class="btn btn-primary" (click)="save(newCourse)" [disabled]="courseForm.invalid">
                         Save course
                     </button>
                     <button class="btn btn-secondary" (click)="cancel()">
