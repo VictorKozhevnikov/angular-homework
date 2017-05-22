@@ -83,14 +83,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
-<<<<<<< HEAD
-                        .subscribe(() => {
-                            this.listChanged.next();
-                        });
-=======
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe(() => this.listChanged.next());
->>>>>>> homework/homework-6
                 }
             });
 
