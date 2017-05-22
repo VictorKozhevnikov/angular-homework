@@ -2,11 +2,16 @@
     <div class="col-lg-8">
         <form novalidate [formGroup]="courseForm">
             <h1>Add new course</h1>
-            <div class="form-group row">
+            <div class="form-group row" [class.has-danger]="courseForm.get('title').touched && courseForm.get('title').invalid">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Title</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" placeholder="Title" formControlName="title">
-                    <pre>{{courseForm.get('title').errors | json}}</pre>
+                    <div class="form-control-feedback" [hidden]="!(courseForm.get('title').touched && courseForm.get('title').invalid && courseForm.get('title').errors.required)" >
+                        Title is required
+                    </div>
+                    <div class="form-control-feedback" *ngIf="courseForm.get('title').touched && courseForm.get('title').invalid && courseForm.get('title').errors.maxlength">
+                        Title must be {{courseForm.get('title').errors.maxlength.requiredLength}} characters or shorter
+                    </div>
                 </div>
             </div>
 
@@ -68,7 +73,7 @@
 
             <div class="form-group row">
                 <div class="col-sm-9 offset-sm-3">
-                    <button class="btn btn-primary" (click)="save(newCourse)">
+                    <button class="btn btn-primary" (click)="save(newCourse)" [disabled]="courseForm.invalid">
                         Save course
                     </button>
                     <button class="btn btn-secondary" (click)="cancel()">
