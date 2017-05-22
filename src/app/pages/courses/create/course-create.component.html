@@ -21,17 +21,21 @@
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" formControlName="isTopRated"> Top rated
                         </label>
-                    <pre>{{courseForm.get('isTopRated').errors | json}}</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" [class.has-danger]="courseForm.get('description').touched && courseForm.get('description').invalid">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Description</label>
                 <div class="col-sm-9">
-                    <textarea type="text" class="form-control" placeholder="Description" formControlName="description">
+                    <textarea type="text" rows="10" class="form-control" placeholder="Description" formControlName="description">
                     </textarea>
-                    <pre>{{courseForm.get('description').errors | json}}</pre>
+                    <div class="form-control-feedback" [hidden]="!(courseForm.get('description').touched && courseForm.get('description').invalid && courseForm.get('description').errors.required)" >
+                        Description is required
+                    </div>
+                    <div class="form-control-feedback" *ngIf="courseForm.get('description').touched && courseForm.get('description').invalid && courseForm.get('description').errors.maxlength">
+                        Description must be {{courseForm.get('description').errors.maxlength.requiredLength}} characters or shorter
+                    </div>
                 </div>
             </div>
 
