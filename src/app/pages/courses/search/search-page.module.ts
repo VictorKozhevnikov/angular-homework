@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -12,9 +13,9 @@ import { DeleteConfirmationComponent } from './delete-confirmation';
     declarations: [
         SearchPageComponent, DeleteConfirmationComponent],
     imports: [
+        CommonModule,
         CoursesListModule,
         ToolboxModule,
-        OfflineCoursesModule,
         NgbModule.forRoot()],
     exports: [
         SearchPageComponent],

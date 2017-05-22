@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { ProfilingService } from './profiling.service';
+import { DummyWorkService } from './dummy-work.service';
 
 @NgModule({
     declarations: [],
     imports: [],
     exports: [],
-    providers: [ ProfilingService ]
+    providers: [ DummyWorkService ]
 })
-export class ProfilingModule {
+export class DummyWorkModule {
     constructor() { }
 }

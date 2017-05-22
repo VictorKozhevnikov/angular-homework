@@ -4,9 +4,9 @@ export interface AuthService {
 
     userInfo: Observable<string>;
 
-    login(userName: string, password: string): Promise<boolean>;
+    login(userName: string, password: string): Observable<boolean>;
 
-    logout(): Promise<void>;
+    logout(): Observable<void>;
 
     IsAuthenticated(): boolean;
 

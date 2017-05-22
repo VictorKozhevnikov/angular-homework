@@ -1,44 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, ReplaySubject } from 'rxjs/Rx';
 
 import { AuthService } from '../../contract';
 import { UserSession } from './user-session';
-import { LoadingBlockService } from '../../../../components';
+import { DummyWorkService } from '../../../../core';
 
 @Injectable()
 export class OfflineAuthService implements AuthService {
     public userInfo: Observable<string>;
 
-    private userInfoObserver: any;
+    private userInfoSubject: ReplaySubject<string> = new ReplaySubject<string>(1);
 
     public constructor(
         private readonly userSession: UserSession,
-        private readonly loadingBlockService: LoadingBlockService
+        private readonly dummyWorkService: DummyWorkService
     ) {
-
-        this.userInfo = new Observable<string>(observer => {
-            this.userInfoObserver = observer;
-        });
-
+        this.userInfo = this.userInfoSubject.asObservable();
     }
 
-    public login(userName: string, password: string): Promise<boolean> {
+    public login(userName: string, password: string): Observable<boolean> {
         // the only user is admin/password
         const loginIsSuccessful = userName === 'admin' && password === 'password';
         if (loginIsSuccessful) {
             this.userSession.beginSession(userName);
-            this.userInfoObserver.next(userName);
+            this.userInfoSubject.next(userName);
         }
 
-        return this.loadingBlockService
-            .block(500)
-            .then(() => loginIsSuccessful);
+        const result = Observable.of(loginIsSuccessful);
+
+        return this.dummyWorkService.workOn(result);
     }
 
-    public logout(): Promise<void> {
+    public logout(): Observable<void> {
         this.userSession.endSession();
-        this.userInfoObserver.next(null);
-        return this.loadingBlockService.block(500);
+        this.userInfoSubject.next(null);
+
+        const result = Observable.of(null);
+
+        return this.dummyWorkService.workOn(result);
     }
 
     public IsAuthenticated(): boolean {

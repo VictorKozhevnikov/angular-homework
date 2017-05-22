@@ -1,28 +1,66 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Output, OnInit, OnDestroy, Inject, EventEmitter } from '@angular/core';
+
+import { Subject, Observable } from 'rxjs/Rx';
+
 import { Course, CoursesService, coursesServiceToken } from '../../../domain/courses/contract';
 import { DeleteConfirmationComponent } from './delete-confirmation';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from './filter';
+import { OrderByPipe } from '../../../components/order-by';
 
 @Component({
     selector: 'courses-search-page',
     template: require('./search-page.component.html'),
-    providers: [FilterPipe]
+    providers: [FilterPipe, OrderByPipe]
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit, OnDestroy {
+    @Output() public addCourseRequested: EventEmitter<void> = new EventEmitter<void>();
+    public courses: Observable<Array<Course>>;
 
-    public courses: Array<Course>;
+    private listChanged: Subject<void> = new Subject<void>();
+    private filters: Subject<string> = new Subject<string>();
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     public constructor(
         @Inject(coursesServiceToken)
         private readonly coursesService: CoursesService,
         private readonly ngbModal: NgbModal,
-        private readonly filterPipe: FilterPipe
+        private readonly filterPipe: FilterPipe,
+        private readonly orderByPipe: OrderByPipe
     ) {
     }
 
     public ngOnInit() {
-        this.update();
+        const numberOfDays = 14;
+
+        this.courses = this.listChanged
+            .startWith(null)
+            .flatMap(() => {
+                // make service parameters
+                const beginDate = new Date();
+                beginDate.setDate(beginDate.getDate() - numberOfDays);
+                // get courses list
+                return this.coursesService.getLatestCourses({ beginDate });
+            })
+            .map(items => {
+                // need to cast sinse orderByPipe is generic
+                return <Array<Course>> this.orderByPipe.transform(items, 'beginTime', 'asc');
+            })
+            .combineLatest(
+                this.filters.startWith(''),
+                (items, filterText) => {
+                    return this.filterPipe.transform(items, filterText);
+                });
+    }
+
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
+    public addCourse() {
+        this.addCourseRequested.emit();
     }
 
     public deleteCourse(course: Course): void {
@@ -36,24 +74,14 @@ export class SearchPageComponent implements OnInit {
                 if (shouldDelete) {
                     return this.coursesService
                         .deleteCourse(course.id)
-                        .then(() => this.update());
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe(() => this.listChanged.next());
                 }
             });
 
     }
 
     private filterChanged(filterText: string): void {
-        this.update(filterText);
-    }
-
-    private update(filterText: string = '') {
-        this.coursesService
-            .getCourses()
-            .then(courses => {
-                return this.filterPipe.transform(courses, filterText);
-            })
-            .then(courses => {
-                this.courses = courses;
-            });
+        this.filters.next(filterText);
     }
 }

@@ -4,13 +4,17 @@
 import {
     Component,
     OnInit,
+    OnDestroy,
     ViewEncapsulation,
     Inject
 } from '@angular/core';
+
+import { Observable, Subject } from 'rxjs/Rx';
+
 import { AppState } from './app.service';
 
 import { AuthService, authServiceToken } from './domain/auth';
-import { ProfilingService } from './core/profiling';
+import { DummyWorkService } from './core';
 import { LoadingBlockService } from './components';
 
 /*
@@ -25,33 +29,43 @@ import { LoadingBlockService } from './components';
         './app.component.scss'
     ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
     public currentPage: string;
-    public loadingBlockIsVisible: boolean;
 
     public pages = {
         login: 'login',
         search: 'search',
+        addCourse: 'addCourse'
     };
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     constructor(
         public appState: AppState,
         @Inject(authServiceToken)
         private readonly authService: AuthService,
-        private readonly profilingService: ProfilingService,
-        private readonly loadingBlockService: LoadingBlockService
+        private readonly loadingBlockService: LoadingBlockService,
+        private readonly dummyWorkService: DummyWorkService
     ) { }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         console.log('Initial App State', this.appState.state);
 
         this.currentPage = this.authService.IsAuthenticated()
             ? this.pages.search
             : this.pages.login;
 
-        this.loadingBlockService.visible.subscribe(isVisible => {
-            this.loadingBlockIsVisible = isVisible;
-        });
+        this.dummyWorkService.workStarted
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => this.loadingBlockService.workStarted());
+        this.dummyWorkService.workFinished
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => this.loadingBlockService.workFinished());
+    }
+
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     public loginSucceeded() {
@@ -61,9 +75,18 @@ export class AppComponent implements OnInit {
     public logout() {
         this.authService
             .logout()
-            .then(() => {
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
                 this.currentPage = this.pages.login;
             });
+    }
+
+    public addCourse(): void {
+        this.currentPage = this.pages.addCourse;
+    }
+
+    public createPageClosed(): void {
+        this.currentPage = this.pages.search;
     }
 
 }

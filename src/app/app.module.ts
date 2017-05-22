@@ -47,14 +47,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterModule, HeaderModule } from './components';
 
 // pages
-import { SearchPageModule } from './pages';
+import { CoursesModule } from './pages';
 import { LoginModule } from './pages';
 
-// auth
-import { OfflineAuthModule } from './domain/auth/implementation/offline';
+// domain
+import { DomainModule } from './domain';
 
-import { ProfilingModule } from './core/profiling';
 import { LoadingBlockModule } from './components';
+
+// core
+import { CoreModule } from './core';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -73,16 +75,18 @@ import { LoadingBlockModule } from './components';
         // ng-bootstrap
         // NgbModule.forRoot(),
 
+        // core
+        CoreModule,
+
         // components
         FooterModule,
         HeaderModule,
 
         // pages
-        SearchPageModule,
+        CoursesModule,
         LoginModule,
 
-        OfflineAuthModule,
-        ProfilingModule,
+        DomainModule,
         LoadingBlockModule
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
@@ -116,7 +120,7 @@ export class AppModule {
     }
 
     public hmrOnDestroy(store: StoreType) {
-        const cmpLocation = this.appRef.components.map( cmp => cmp.location.nativeElement);
+        const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
         // save state
         const state = this.appState._state;
         store.state = state;
