@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { DurationModule } from  '../../../components';
 
@@ -11,7 +11,7 @@ import { CourseCreateComponent } from './course-create.component';
         CourseCreateComponent],
     imports: [
         CommonModule,
-        FormsModule,
+        ReactiveFormsModule,
         DurationModule],
     exports: [
         CourseCreateComponent]

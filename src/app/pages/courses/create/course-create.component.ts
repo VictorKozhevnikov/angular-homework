@@ -4,6 +4,7 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CourseData } from '../../../domain/courses';
 
@@ -16,8 +17,11 @@ export class CourseCreateComponent {
     @Output() public closed = new EventEmitter<void>();
 
     public courseData: CourseData;
+    public courseForm: FormGroup;
 
-    public constructor() {
+    public constructor(
+        private readonly formBuilder: FormBuilder
+    ) {
         this.courseData = {
             title: null,
             description: null,
@@ -25,6 +29,13 @@ export class CourseCreateComponent {
             duration: null,
             isTopRated: null
         };
+
+        this.courseForm = this.formBuilder.group({
+            title: ['', [Validators.required, Validators.maxLength(50)] ],
+            isTopRated: [false, Validators.required],
+            description: ['', [Validators.required, Validators.maxLength(500)]]
+        });
+
     }
 
     public save(): void {
