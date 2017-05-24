@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { MyDateInputDirective, dateValidator } from '../../../core/input/date';
+
 import { CourseData } from '../../../domain/courses';
 
 @Component({
@@ -16,6 +18,7 @@ import { CourseData } from '../../../domain/courses';
 export class CourseCreateComponent {
     @Output() public closed = new EventEmitter<void>();
 
+    public readonly dateFormat: string = 'MM/DD/YYYY';
     public courseData: CourseData;
     public courseForm: FormGroup;
 
@@ -31,9 +34,10 @@ export class CourseCreateComponent {
         };
 
         this.courseForm = this.formBuilder.group({
-            title: ['', [Validators.required, Validators.maxLength(50)] ],
+            title: ['', [Validators.required, Validators.maxLength(50)]],
             isTopRated: [false, Validators.required],
-            description: ['', [Validators.required, Validators.maxLength(500)]]
+            description: ['', [Validators.required, Validators.maxLength(500)]],
+            beginTime: [new Date(), [Validators.required, dateValidator(this.dateFormat)]]
         });
 
     }
