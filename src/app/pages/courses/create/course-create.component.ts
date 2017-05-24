@@ -37,7 +37,8 @@ export class CourseCreateComponent {
             title: ['', [Validators.required, Validators.maxLength(50)]],
             isTopRated: [false, Validators.required],
             description: ['', [Validators.required, Validators.maxLength(500)]],
-            beginTime: [new Date(), [Validators.required, dateValidator(this.dateFormat)]]
+            beginTime: [new Date(), [Validators.required, dateValidator(this.dateFormat)]],
+            duration: [0, Validators.required]
         });
 
     }
