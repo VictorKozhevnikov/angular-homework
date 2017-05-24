@@ -26,11 +26,17 @@ const myDateValueAccessor = {
     multi: true
 };
 
+const myDateValidator = {
+    provide: NG_VALIDATORS,
+    useExisting: forwardRef(() => MyDateInputDirective),
+    multi: true
+};
+
 @Directive({
     selector: 'input[myDateInput]',
-    providers: [myDateValueAccessor]
+    providers: [myDateValueAccessor, myDateValidator]
 })
-export class MyDateInputDirective implements ControlValueAccessor, OnInit, OnDestroy {
+export class MyDateInputDirective implements ControlValueAccessor, Validator, OnInit, OnDestroy {
     private static readonly defaultDateFormat: string = 'MM/DD/YYYY';
 
     @HostBinding('value')
@@ -42,19 +48,26 @@ export class MyDateInputDirective implements ControlValueAccessor, OnInit, OnDes
 
     private value = new Subject<string>();
     private ngUnsubscribe: Subject<void> = new Subject<void>();
+    private isValid: boolean = false;
 
     public constructor() {
     }
 
     public ngOnInit(): void {
         this.value
-            .map(valueString => moment(valueString, this.dateFormat, true))
-            .map(valueMoment => valueMoment.isValid
-                ? valueMoment.toDate()
-                : null)
+            .map(valueString =>{
+                const valueMoment = moment(valueString, this.dateFormat, true);
+                const isValidDate = valueMoment.isValid();
+                const controlIsValid = valueString.length === 0 || isValidDate;
+                return {
+                    isValid: controlIsValid,
+                    date: isValidDate ? valueMoment.toDate() : null
+                };
+            })
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(date => {
-                this.onChange(date);
+            .subscribe(result => {
+                this.isValid = result.isValid;
+                this.onChange(result.date);
             });
     }
 
@@ -78,11 +91,19 @@ export class MyDateInputDirective implements ControlValueAccessor, OnInit, OnDes
         const m = moment(obj);
         if (m.isValid()) {
             this.dateString = m.format(this.dateFormat);
+            this.isValid = true;
         }
     }
 
     public registerOnChange(fn: any): void { this.onChange = fn; }
     public registerOnTouched(fn: any): void { this.onTouched = fn; }
+
+    public validate(control: AbstractControl): { [key: string]: any } {
+        return this.isValid
+            ? null
+            : { date: {requiredFormat: this.dateFormat} };
+    }
+
 
     private onChange = (_: any) => { };
     private onTouched = () => { };
