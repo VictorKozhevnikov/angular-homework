@@ -36,7 +36,7 @@ const validator = {
 
 @Component({
     selector: 'input-course-data',
-    template: require('./input-course-data.component.html'),
+    templateUrl: './input-course-data.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [valueAccessor, validator]
 })
