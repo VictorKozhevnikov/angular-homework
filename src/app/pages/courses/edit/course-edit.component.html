@@ -1,0 +1,20 @@
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h1>Edit course</h1>
+
+        <input-course-data [formControl]="courseDataFormControl">
+        </input-course-data>
+
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <button class="btn btn-primary" (click)="save(courseDataFormControl.value)" [disabled]="courseDataFormControl.invalid"> 
+                    Save course 
+                </button>
+                <button class="btn btn-secondary" (click)="cancel()">
+                        Cancel
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
