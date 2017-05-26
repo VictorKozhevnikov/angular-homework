@@ -87,7 +87,7 @@
 
             <div class="form-group row">
                 <div class="col-sm-9 offset-sm-3">
-                    <button class="btn btn-primary" (click)="save(newCourse)" [disabled]="courseForm.invalid">
+                    <button class="btn btn-primary" (click)="save(courseForm.value)" [disabled]="courseForm.invalid">
                         Save course
                     </button>
                     <button class="btn btn-secondary" (click)="cancel()">

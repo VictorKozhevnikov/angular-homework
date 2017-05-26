@@ -2,13 +2,19 @@ import {
     Component,
     ChangeDetectionStrategy,
     Output,
-    EventEmitter
+    EventEmitter,
+    Inject
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MyDateInputDirective } from '../../../core/input/date';
 
-import { CourseData, minimumAuthorsCountValidator } from '../../../domain/courses';
+import {
+    CourseData,
+    CoursesService,
+    coursesServiceToken,
+    minimumAuthorsCountValidator
+} from '../../../domain/courses';
 
 @Component({
     selector: 'course-create-page',
@@ -19,20 +25,13 @@ export class CourseCreateComponent {
     @Output() public closed = new EventEmitter<void>();
 
     public readonly dateFormat: string = 'MM/DD/YYYY';
-    public courseData: CourseData;
     public courseForm: FormGroup;
 
     public constructor(
-        private readonly formBuilder: FormBuilder
+        private readonly formBuilder: FormBuilder,
+        @Inject(coursesServiceToken)
+        private readonly coursesService: CoursesService
     ) {
-        this.courseData = {
-            title: null,
-            description: null,
-            beginTime: null,
-            duration: null,
-            isTopRated: null
-        };
-
         this.courseForm = this.formBuilder.group({
             title: ['', [Validators.required, Validators.maxLength(50)]],
             isTopRated: [false, Validators.required],
@@ -44,8 +43,22 @@ export class CourseCreateComponent {
 
     }
 
-    public save(): void {
-        this.closed.emit();
+    public save(value: any): void {
+        const courseData: CourseData = {
+            title: value.title,
+            isTopRated: value.isTopRated,
+            description: value.description,
+            beginTime: value.beginTime,
+            duration: value.duration,
+            authors: value.authors
+        };
+
+        this.coursesService
+            .createCourse(courseData)
+            .first()
+            .subscribe(() => {
+                this.closed.emit();
+            });
     }
 
     public cancel(): void {

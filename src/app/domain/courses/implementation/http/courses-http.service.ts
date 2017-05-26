@@ -70,7 +70,16 @@ export class CoursesHttpService implements CoursesService {
     }
 
     public createCourse(courseData: CourseData): Observable<void> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Post,
+            url: '/courses',
+            body: courseData
+        });
+
+        const result: Observable<void> = this.http
+            .request(request).map(() => null);
+
+        return result;
     }
 
     public getCourse(courseId: number): Observable<Course> {
