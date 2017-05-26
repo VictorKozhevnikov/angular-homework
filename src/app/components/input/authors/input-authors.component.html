@@ -1,0 +1,8 @@
+<div class="list-group">
+    <div class="list-group-item form-check" *ngFor="let author of allAuthors | async">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" value="" [checked]="authorIsSelected(author)" (change)="toggleAuthor(author, $event.target.checked)" (blur)="touch()">
+            {{author.firstName}} {{author.lastName}}
+        </label>
+    </div>
+</div>

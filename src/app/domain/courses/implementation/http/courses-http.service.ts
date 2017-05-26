@@ -5,7 +5,13 @@ import * as moment from 'moment';
 
 import { AuthorizedHttp } from '../../../http';
 
-import { Course, CourseData, CoursesService, CoursesSearchParams } from '../../contract';
+import {
+    Course,
+    CourseAuthor,
+    CourseData,
+    CoursesService,
+    CoursesSearchParams
+} from '../../contract';
 
 @Injectable()
 export class CoursesHttpService implements CoursesService {
@@ -49,6 +55,20 @@ export class CoursesHttpService implements CoursesService {
         return result;
     }
 
+    public searchCourseAuthors(): Observable<Array<CourseAuthor>> {
+        const request: Request = new Request({
+            method: RequestMethod.Get,
+            url: '/authors'
+        });
+
+        const result: Observable<Array<CourseAuthor>> = this.http
+            .request(request)
+            .map(response => response.json())
+            .map(items => items.map(item => this.mapToCourseAuthor(item)));
+
+        return result;
+    }
+
     public createCourse(courseData: CourseData): Observable<void> {
         throw new Error('not implemented');
     }
@@ -69,7 +89,7 @@ export class CoursesHttpService implements CoursesService {
 
         const result: Observable<void> = this.http
             .request(request)
-            .map(() => {});
+            .map(() => { });
 
         return result;
     }
@@ -81,7 +101,16 @@ export class CoursesHttpService implements CoursesService {
             isTopRated: object.isTopRated,
             description: object.description,
             beginTime: object.beginTime,
-            duration: object.duration
+            duration: object.duration,
+            authors: object.authors.map(a => this.mapToCourseAuthor(a))
+        };
+    }
+
+    private mapToCourseAuthor(object: any): CourseAuthor {
+        return {
+            id: object.id,
+            firstName: object.firstName,
+            lastName: object.lastName
         };
     }
 }

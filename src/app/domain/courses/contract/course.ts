@@ -1,3 +1,5 @@
+import { CourseAuthor } from './course-author';
+
 export interface Course {
     id: number;
     title: string;
@@ -5,4 +7,5 @@ export interface Course {
     duration: number;
     beginTime: Date;
     isTopRated: boolean;
+    authors: Array<CourseAuthor>;
 }

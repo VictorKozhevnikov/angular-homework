@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { CoreModule } from '../../../core';
 import { DurationModule } from  '../../../components';
+import { InputAuthorsModule } from  '../../../components';
 
 import { CourseCreateComponent } from './course-create.component';
 
@@ -14,6 +15,7 @@ import { CourseCreateComponent } from './course-create.component';
         CommonModule,
         ReactiveFormsModule,
         DurationModule,
+        InputAuthorsModule,
         CoreModule],
     exports: [
         CourseCreateComponent]

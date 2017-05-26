@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { MyDateInputDirective, dateValidator } from '../../../core/input/date';
+import { MyDateInputDirective } from '../../../core/input/date';
 
 import { CourseData } from '../../../domain/courses';
 
@@ -38,7 +38,8 @@ export class CourseCreateComponent {
             isTopRated: [false, Validators.required],
             description: ['', [Validators.required, Validators.maxLength(500)]],
             beginTime: [new Date(), Validators.required],
-            duration: [0, Validators.required]
+            duration: [0, Validators.required],
+            authors: [ [] ]
         });
 
     }
