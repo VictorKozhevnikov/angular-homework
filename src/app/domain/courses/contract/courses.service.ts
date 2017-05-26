@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 
 import { Course } from  './course';
-import { CourseData } from  './courseData';
+import { CourseData } from  './course-data';
 import { CourseAuthor } from './course-author';
 import { CoursesSearchParams } from './coursesSearchParams';
 

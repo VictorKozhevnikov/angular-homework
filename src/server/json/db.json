@@ -966,16 +966,16 @@
       "id": 1147
     },
     {
-      "title": "ut sint aliqua officia",
-      "description": "Incididunt Lorem id voluptate elit. Et qui irure consequat culpa fugiat do aliquip sunt pariatur Lorem aute sit cillum. Occaecat mollit aliqua voluptate enim Lorem ad consequat cillum sint magna dolore quis ut.",
-      "duration": 143,
-      "beginTime": "2017-12-26T21:37:37+00:00",
+      "title": "ut sint aliqua offic",
       "isTopRated": false,
+      "description": "Incididunt Lorem id voluptate elit. Et qui irure consequat culpa fugiat do aliquip sunt pariatur Lorem aute sit cillum. Occaecat mollit aliqua voluptate enim Lorem ad consequat cillum sint magna dolore quis ut.",
+      "beginTime": "2017-12-26T21:37:37+00:00",
+      "duration": 143,
       "authors": [
         {
-          "lastName": "Blackburn",
+          "id": 0,
           "firstName": "Melva",
-          "id": 0
+          "lastName": "Blackburn"
         }
       ],
       "id": 6648

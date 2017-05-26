@@ -11,7 +11,11 @@ import {
     FormGroup,
     Validators,
     NG_VALUE_ACCESSOR,
-    ControlValueAccessor
+    ControlValueAccessor,
+    NG_VALIDATORS,
+    Validator,
+    AbstractControl,
+    ValidationErrors
 } from '@angular/forms';
 
 import { Subject } from 'rxjs/Rx';
@@ -24,12 +28,30 @@ const valueAccessor = {
     multi: true
 };
 
+const validator = {
+    provide: NG_VALIDATORS,
+    useExisting: forwardRef(() => InputCourseDataComponent),
+    multi: true
+};
+
 @Component({
     selector: 'input-course-data',
-    templateUrl: './input-course-data.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    template: require('./input-course-data.component.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [valueAccessor, validator]
 })
-export class InputCourseDataComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class InputCourseDataComponent
+    implements ControlValueAccessor, Validator, OnInit, OnDestroy {
+
+    private static readonly defaultCourseData: CourseData = {
+        title: '',
+        isTopRated: false,
+        description: '',
+        beginTime: new Date(),
+        duration: 0,
+        authors: []
+    };
+
     public readonly dateFormat: string = 'MM/DD/YYYY';
     public courseForm: FormGroup;
 
@@ -62,13 +84,12 @@ export class InputCourseDataComponent implements ControlValueAccessor, OnInit, O
         this.ngUnsubscribe.complete();
     }
 
-    public touch(){
-        console.log('---- touched');
+    public touch() {
         this.onTouched();
     }
 
     public writeValue(courseData: CourseData): void {
-        this.courseForm.setValue(courseData);
+        this.courseForm.setValue(courseData || InputCourseDataComponent.defaultCourseData);
     }
 
     public registerOnChange(fn: any): void {
@@ -77,6 +98,14 @@ export class InputCourseDataComponent implements ControlValueAccessor, OnInit, O
 
     public registerOnTouched(fn: any): void {
         this.onTouched = fn;
+    }
+
+    public validate(c: AbstractControl): ValidationErrors | null {
+        if (c.value !== null && c.value !== undefined && this.courseForm.invalid) {
+            return {
+                courseDataIsInvalid: true
+            };
+        }
     }
 
     private onChange = (_: any) => { };

@@ -83,11 +83,30 @@ export class CoursesHttpService implements CoursesService {
     }
 
     public getCourse(courseId: number): Observable<Course> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Get,
+            url: '/courses/' + courseId.toString()
+        });
+
+        const result: Observable<Course> = this.http
+            .request(request)
+            .map(response => response.json())
+            .map(data => this.mapToCourse(data));
+
+        return result;
     }
 
     public updateCourse(courseId: number, courseData: CourseData): Observable<void> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Put,
+            url: '/courses/' + courseId.toString(),
+            body: courseData
+        });
+
+        const result: Observable<void> = this.http
+            .request(request).map(() => null);
+
+        return result;
     }
 
     public deleteCourse(courseId: number): Observable<void> {
@@ -104,7 +123,7 @@ export class CoursesHttpService implements CoursesService {
     }
 
     private mapToCourse(object: any): Course {
-        return {
+        return new Course({
             id: object.id,
             title: object.title,
             isTopRated: object.isTopRated,
@@ -112,7 +131,7 @@ export class CoursesHttpService implements CoursesService {
             beginTime: object.beginTime,
             duration: object.duration,
             authors: object.authors.map(a => this.mapToCourseAuthor(a))
-        };
+        });
     }
 
     private mapToCourseAuthor(object: any): CourseAuthor {
