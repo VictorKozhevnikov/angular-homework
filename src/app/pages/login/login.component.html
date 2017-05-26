@@ -1,18 +1,18 @@
 <section class='container'>
     <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6" #loginForm="ngForm" ngForm>
             <div class="form-group">
-                <label for="exampleInputEmail1">user name</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="User name" #userName>
+                <label for="userName">user name</label>
+                <input type="text" class="form-control" id="userName" name="userName" ngModel placeholder="User name" required>
             </div>
 
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" #password>
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" ngModel placeholder="Password" required>
             </div>
 
             <div class="form-group">
-                <button class="btn btn-primary" (click)="login(userName.value, password.value)">Submit</button>
+                <button class="btn btn-primary" (click)="login(loginForm)" [disabled]="loginForm.invalid" >Submit</button>
             </div>
 
             <div class="alert alert-danger" role="alert" [hidden]="!lastLoginFailed">

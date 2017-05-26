@@ -35,7 +35,12 @@ export class LoginComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    public login(userName: string, password: string) {
+    public login(form: any) {
+        console.log(form);
+
+        const userName: string = form.value.userName;
+        const password: string = form.value.password;
+
         this.authService
             .login(userName, password)
             .do(loginIsSuccessful => {
@@ -47,6 +52,7 @@ export class LoginComponent implements OnDestroy {
                 if (loginIsSuccessful) {
                     this.loginSucceeded.emit();
                 }
+
             });
     }
 
