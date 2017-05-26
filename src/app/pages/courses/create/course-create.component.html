@@ -69,18 +69,16 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" [class.has-danger]="courseForm.get('authors').touched && courseForm.get('authors').invalid">
                 <label for="title" class="col-sm-3 col-form-label text-sm-right">Authors</label>
-                <input-authors class="col-sm-9" formControlName="authors">
-                </input-authors>
-            </div>
-
-            <!--<div class="form-group row">
-                <div class="col-sm-9 offset-sm-3">
-                    <pre>{{courseData | json}}
-                    </pre>
+                <div class="col-sm-9">
+                    <input-authors formControlName="authors">
+                    </input-authors>
+                    <div class="form-control-feedback" *ngIf="courseForm.get('authors').touched && courseForm.get('authors').invalid && courseForm.get('authors').errors.minimumAuthorsCount">
+                        At least {{courseForm.get('authors').errors.minimumAuthorsCount}} author(s) required
+                    </div>
                 </div>
-            </div>-->
+            </div>
 
             <div class="form-group">
                 <pre>{{courseForm.value | json}}</pre>

@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MyDateInputDirective } from '../../../core/input/date';
 
-import { CourseData } from '../../../domain/courses';
+import { CourseData, minimumAuthorsCountValidator } from '../../../domain/courses';
 
 @Component({
     selector: 'course-create-page',
@@ -39,7 +39,7 @@ export class CourseCreateComponent {
             description: ['', [Validators.required, Validators.maxLength(500)]],
             beginTime: [new Date(), Validators.required],
             duration: [0, Validators.required],
-            authors: [ [] ]
+            authors: [[], minimumAuthorsCountValidator(1)]
         });
 
     }
