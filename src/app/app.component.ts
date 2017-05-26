@@ -31,11 +31,13 @@ import { LoadingBlockService } from './components';
 })
 export class AppComponent implements OnInit, OnDestroy {
     public currentPage: string;
+    public courseId: number;
 
     public pages = {
         login: 'login',
         search: 'search',
-        addCourse: 'addCourse'
+        addCourse: 'addCourse',
+        editCourse: 'editCourse'
     };
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -85,7 +87,16 @@ export class AppComponent implements OnInit, OnDestroy {
         this.currentPage = this.pages.addCourse;
     }
 
+    public editCourse(courseId: number): void {
+        this.currentPage = this.pages.editCourse;
+        this.courseId = courseId;
+    }
+
     public createPageClosed(): void {
+        this.currentPage = this.pages.search;
+    }
+
+    public editPageClosed(): void {
         this.currentPage = this.pages.search;
     }
 

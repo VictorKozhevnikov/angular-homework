@@ -1,5 +1,7 @@
 import {
     Component,
+    Output,
+    EventEmitter,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     OnInit,
@@ -25,6 +27,7 @@ const valueAccessor = {
     providers: [valueAccessor]
 })
 export class InputAuthorsComponent implements ControlValueAccessor, OnInit, OnDestroy {
+    @Output() public touched = new EventEmitter<void>();
     public selectedAuthors: Array<CourseAuthor> = [];
     public allAuthors: Observable<Array<CourseAuthor>> = null;
 
@@ -47,11 +50,13 @@ export class InputAuthorsComponent implements ControlValueAccessor, OnInit, OnDe
     }
 
     public authorIsSelected(courseAuthor: CourseAuthor): boolean {
-        return this.selectedAuthors.indexOf(courseAuthor) >= 0;
+        return this.selectedAuthors.some(author => author.id === courseAuthor.id);
     }
 
     public toggleAuthor(courseAuthor: CourseAuthor, include: boolean): void {
-        const authorIndex: number = this.selectedAuthors.indexOf(courseAuthor);
+        const authorIndex: number = this.selectedAuthors
+            .findIndex(author => author.id === courseAuthor.id);
+
         const alreadyIncluded: boolean = authorIndex >= 0;
 
         if (include && !alreadyIncluded) {
@@ -65,6 +70,7 @@ export class InputAuthorsComponent implements ControlValueAccessor, OnInit, OnDe
 
     public touch() {
         this.onTouched();
+        this.touched.emit();
     }
 
     public writeValue(obj: any): void {

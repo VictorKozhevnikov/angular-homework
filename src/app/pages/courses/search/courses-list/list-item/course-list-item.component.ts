@@ -19,9 +19,14 @@ export class CourseListItemComponent {
     @Input() public course: Course;
 
     @Output() public delete = new EventEmitter<Course>();
+    @Output() public edit = new EventEmitter<Course>();
 
-    private deleteCourse(course: Course): void {
+    public deleteCourse(course: Course): void {
         this.delete.emit(course);
+    }
+
+    public editCourse(course: Course): void {
+        this.edit.emit(course);
     }
 
 }

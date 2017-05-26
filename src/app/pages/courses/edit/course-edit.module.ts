@@ -4,18 +4,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { InputCourseDataModule } from '../shared/input-course-data';
 
-import { CourseCreateComponent } from './course-create.component';
+import { CourseEditComponent } from './course-edit.component';
 
 @NgModule({
-    declarations: [
-        CourseCreateComponent],
+    declarations: [CourseEditComponent],
     imports: [
         CommonModule,
-        ReactiveFormsModule,
-        InputCourseDataModule],
-    exports: [
-        CourseCreateComponent]
+        InputCourseDataModule,
+        ReactiveFormsModule],
+    exports: [CourseEditComponent]
 })
-export class CourseCreateModule {
+export class CourseEditModule {
     constructor() { }
 }
