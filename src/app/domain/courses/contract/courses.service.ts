@@ -2,11 +2,14 @@ import { Observable } from 'rxjs/Rx';
 
 import { Course } from  './course';
 import { CourseData } from  './courseData';
+import { CourseAuthor } from './course-author';
 import { CoursesSearchParams } from './coursesSearchParams';
 
 export interface CoursesService {
 
     searchCourses(params: CoursesSearchParams): Observable<Array<Course>>;
+
+    searchCourseAuthors(): Observable<Array<CourseAuthor>>;
 
     createCourse(courseData: CourseData): Observable<void>;
 
