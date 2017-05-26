@@ -1,14 +1,20 @@
 <section class='container'>
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6" #loginForm="ngForm" ngForm>
-            <div class="form-group">
+            <div class="form-group" [class.has-danger]="loginForm.form.get('userName') && loginForm.form.get('userName').touched && loginForm.form.get('userName').invalid">
                 <label for="userName">user name</label>
                 <input type="text" class="form-control" id="userName" name="userName" ngModel placeholder="User name" required>
+                <div class="form-control-feedback" [hidden]="!(loginForm.form.get('userName') && loginForm.form.get('userName').touched && loginForm.form.get('userName').invalid && loginForm.form.get('userName').errors.required)">
+                    User name is required
+                </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" [class.has-danger]="loginForm.form.get('password') && loginForm.form.get('password').touched && loginForm.form.get('password').invalid">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password" ngModel placeholder="Password" required>
+                <div class="form-control-feedback" [hidden]="!(loginForm.form.get('password') && loginForm.form.get('password').touched && loginForm.form.get('password').invalid && loginForm.form.get('password').errors.required)">
+                    Password is required
+                </div>
             </div>
 
             <div class="form-group">

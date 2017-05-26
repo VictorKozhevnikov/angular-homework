@@ -8,6 +8,8 @@ import {
     ChangeDetectorRef
 } from '@angular/core';
 
+import { NgForm } from '@angular/forms';
+
 import { Subject } from 'rxjs/Rx';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
@@ -15,7 +17,7 @@ import { AuthService, authServiceToken } from '../../domain/auth';
 @Component({
     selector: 'login',
     templateUrl: './login.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class LoginComponent implements OnDestroy {
 
@@ -35,9 +37,7 @@ export class LoginComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    public login(form: any) {
-        console.log(form);
-
+    public login(form: NgForm) {
         const userName: string = form.value.userName;
         const password: string = form.value.password;
 
@@ -52,7 +52,10 @@ export class LoginComponent implements OnDestroy {
                 if (loginIsSuccessful) {
                     this.loginSucceeded.emit();
                 }
-
+                form.setValue({
+                    userName: '',
+                    password: ''
+                });
             });
     }
 
