@@ -11,7 +11,7 @@
         <p>{{course.description}}</p>
     </div>
     <div class="col-md-3 col-lg-2 course-list-item__buttons-layout">
-        <button class="btn btn-default btn-block" (click)="editCourse(course)">Edit course</button>
-        <button class="btn btn-default btn-block" (click)="deleteCourse(course)">Delete</button>
+        <a class="btn btn-secondary btn-block" [routerLink]="[course.id]">Edit course</a>
+        <button class="btn btn-secondary btn-block" (click)="deleteCourse(course)">Delete</button>
     </div>
 </div>

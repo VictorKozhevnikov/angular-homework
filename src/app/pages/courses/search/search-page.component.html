@@ -1,4 +1,4 @@
-<toolbox (filterChanged)="filterChanged($event)" (addCourseRequested)="addCourse()"></toolbox>
+<toolbox (filterChanged)="filterChanged($event)"></toolbox>
 
 <courses-list [courses]="courses | async" (edit)="editCourse($event)" (delete)="deleteCourse($event)"></courses-list>
 

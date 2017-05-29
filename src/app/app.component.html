@@ -2,16 +2,6 @@
 
 <courses-header (logoutRequested)="logout()"></courses-header>
 
-<login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
-
-<section class="container app__main-section" *ngIf="currentPage === pages.addCourse || currentPage === pages.editCourse || currentPage === pages.search">
-
-    <course-create-page *ngIf="currentPage === pages.addCourse" (closed)="createPageClosed()"></course-create-page>
-
-    <course-edit-page *ngIf="currentPage === pages.editCourse" [courseId]="courseId" (closed)="editPageClosed()"></course-edit-page>
-
-    <courses-search-page *ngIf="currentPage === pages.search" (addCourseRequested)="addCourse()" (editCourseRequested)="editCourse($event)"></courses-search-page>
-
-</section>
+<router-outlet></router-outlet>
 
 <courses-footer></courses-footer>

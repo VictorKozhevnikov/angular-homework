@@ -22,7 +22,8 @@ import {
  * Platform and Environment providers/directives/pipes
  */
 import { ENV_PROVIDERS } from './environment';
-// import { ROUTES } from './app.routes';
+import { appRoutes } from './app.routes';
+
 // App is our top level component
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
@@ -49,6 +50,7 @@ import { FooterModule, HeaderModule } from './components';
 // pages
 import { CoursesModule } from './pages';
 import { LoginModule } from './pages';
+import { NoContentComponent } from './pages/no-content';
 
 // domain
 import { DomainModule } from './domain';
@@ -64,13 +66,13 @@ import { CoreModule } from './core';
 @NgModule({
     bootstrap: [AppComponent],
     declarations: [
-        AppComponent
+        AppComponent,
+        NoContentComponent
     ],
     imports: [ // import Angular's modules
         BrowserModule,
         FormsModule,
         HttpModule,
-        // RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
 
         // ng-bootstrap
         // NgbModule.forRoot(),
@@ -87,7 +89,9 @@ import { CoreModule } from './core';
         LoginModule,
 
         DomainModule,
-        LoadingBlockModule
+        LoadingBlockModule,
+
+        RouterModule.forRoot(appRoutes, {useHash: true})
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,
