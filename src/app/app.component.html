@@ -1,10 +1,8 @@
 <loading-block></loading-block>
 
-<router-outlet></router-outlet>
-
 <courses-header (logoutRequested)="logout()"></courses-header>
 
-<login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>
+<router-outlet></router-outlet>
 
 <section class="container app__main-section" *ngIf="currentPage === pages.addCourse || currentPage === pages.editCourse || currentPage === pages.search">
 

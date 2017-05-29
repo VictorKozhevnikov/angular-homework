@@ -91,7 +91,7 @@ import { CoreModule } from './core';
         DomainModule,
         LoadingBlockModule,
 
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes, {useHash: true})
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,
