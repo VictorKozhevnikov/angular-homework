@@ -21,6 +21,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     };
 
     @Output() public addCourseRequested = new EventEmitter<void>();
+    @Output() public editCourseRequested = new EventEmitter<number>();
     public courses: Observable<Array<Course>> = null;
     public hasMore: Observable<boolean> = null;
 
@@ -70,6 +71,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
     public addCourse() {
         this.addCourseRequested.emit();
+    }
+
+    public editCourse(course: Course) {
+        this.editCourseRequested.emit(course.id);
     }
 
     public deleteCourse(course: Course): void {

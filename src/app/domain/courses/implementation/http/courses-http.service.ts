@@ -5,7 +5,13 @@ import * as moment from 'moment';
 
 import { AuthorizedHttp } from '../../../http';
 
-import { Course, CourseData, CoursesService, CoursesSearchParams } from '../../contract';
+import {
+    Course,
+    CourseAuthor,
+    CourseData,
+    CoursesService,
+    CoursesSearchParams
+} from '../../contract';
 
 @Injectable()
 export class CoursesHttpService implements CoursesService {
@@ -49,16 +55,58 @@ export class CoursesHttpService implements CoursesService {
         return result;
     }
 
+    public searchCourseAuthors(): Observable<Array<CourseAuthor>> {
+        const request: Request = new Request({
+            method: RequestMethod.Get,
+            url: '/authors'
+        });
+
+        const result: Observable<Array<CourseAuthor>> = this.http
+            .request(request)
+            .map(response => response.json())
+            .map(items => items.map(item => this.mapToCourseAuthor(item)));
+
+        return result;
+    }
+
     public createCourse(courseData: CourseData): Observable<void> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Post,
+            url: '/courses',
+            body: courseData
+        });
+
+        const result: Observable<void> = this.http
+            .request(request).map(() => null);
+
+        return result;
     }
 
     public getCourse(courseId: number): Observable<Course> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Get,
+            url: '/courses/' + courseId.toString()
+        });
+
+        const result: Observable<Course> = this.http
+            .request(request)
+            .map(response => response.json())
+            .map(data => this.mapToCourse(data));
+
+        return result;
     }
 
     public updateCourse(courseId: number, courseData: CourseData): Observable<void> {
-        throw new Error('not implemented');
+        const request: Request = new Request({
+            method: RequestMethod.Put,
+            url: '/courses/' + courseId.toString(),
+            body: courseData
+        });
+
+        const result: Observable<void> = this.http
+            .request(request).map(() => null);
+
+        return result;
     }
 
     public deleteCourse(courseId: number): Observable<void> {
@@ -69,19 +117,28 @@ export class CoursesHttpService implements CoursesService {
 
         const result: Observable<void> = this.http
             .request(request)
-            .map(() => {});
+            .map(() => { });
 
         return result;
     }
 
     private mapToCourse(object: any): Course {
-        return {
+        return new Course({
             id: object.id,
             title: object.title,
             isTopRated: object.isTopRated,
             description: object.description,
             beginTime: object.beginTime,
-            duration: object.duration
+            duration: object.duration,
+            authors: object.authors.map(a => this.mapToCourseAuthor(a))
+        });
+    }
+
+    private mapToCourseAuthor(object: any): CourseAuthor {
+        return {
+            id: object.id,
+            firstName: object.firstName,
+            lastName: object.lastName
         };
     }
 }

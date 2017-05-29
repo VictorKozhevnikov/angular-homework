@@ -1,0 +1,69 @@
+{
+    "principals": [
+        {
+            "id": 1,
+            "userId": 1,
+            "login": "admin",
+            "password": "password",
+            "token": "ce39499af2674cf48722838b12c6afb7"
+        },
+        {
+            "id": 2,
+            "userId": 2,
+            "login": "Victor",
+            "password": "password",
+            "token": "144df1ecf80c4adcb1a97ec631fb4bab"
+        },
+        {
+            "id": 3,
+            "userId": 3,
+            "login": "Nastya",
+            "password": "password",
+            "token": "6ef5321d0d754fcd8939c46de99bfff4"
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "Администратор"
+        },
+        {
+            "id": 2,
+            "name": "Виктор Кожевников"
+        },
+        {
+            "id": 3,
+            "name": "Анастасия Глушкова"
+        }
+    ],
+    "authors": [
+        {
+            "repeat(10)": {
+                "id": "{{index()}}",
+                "firstName": "{{firstName()}}",
+                "lastName": "{{surname()}}"
+            }
+        }
+    ],
+    "courses": [
+        {
+            "repeat(100)": {
+                "id": "{{integer(0, 9999, '####')}}",
+                "authors": [
+                    {
+                        "repeat(1,4)": {
+                            "id": "{{integer(0, 10)}}",
+                            "firstName": "{{firstName()}}",
+                            "lastName": "{{surname()}}"
+                        }
+                    }
+                ],
+                "isTopRated": "{{bool()}}",
+                "beginTime": "{{moment(this.date(new Date(2016, 0, 1), new Date(2018, 0, 1))).format()}}",
+                "duration": "{{integer(20, 400)}}",
+                "description": "{{lorem(3, 'sentences')}}",
+                "title": "{{lorem((1, 4), 'words')}}"
+            }
+        }
+    ]
+}

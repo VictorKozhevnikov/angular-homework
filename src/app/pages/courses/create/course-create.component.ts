@@ -2,33 +2,42 @@ import {
     Component,
     ChangeDetectionStrategy,
     Output,
-    EventEmitter
+    EventEmitter,
+    Inject
 } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
-import { CourseData } from '../../../domain/courses';
+import {
+    CourseData,
+    CoursesService,
+    coursesServiceToken
+} from '../../../domain/courses';
 
 @Component({
     selector: 'course-create-page',
     templateUrl: './course-create.component.html',
-    // changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseCreateComponent {
     @Output() public closed = new EventEmitter<void>();
 
-    public courseData: CourseData;
+    public readonly courseDataFormControl: FormControl;
 
-    public constructor() {
-        this.courseData = {
-            title: null,
-            description: null,
-            beginTime: null,
-            duration: null,
-            isTopRated: null
-        };
+    public constructor(
+        @Inject(coursesServiceToken)
+        private readonly coursesService: CoursesService
+    ) {
+        this.courseDataFormControl = new FormControl(null, Validators.required);
     }
 
-    public save(): void {
-        this.closed.emit();
+    public save(courseData: CourseData): void {
+
+        this.coursesService
+            .createCourse(courseData)
+            .first()
+            .subscribe(() => {
+                this.closed.emit();
+            });
     }
 
     public cancel(): void {

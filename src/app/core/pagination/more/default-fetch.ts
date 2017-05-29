@@ -15,7 +15,9 @@ export function defaultFetch<TQuery, TItem>(
             .map(items => {
 
                 const hasMore = items.length > page.take;
-                items.pop();
+                if (hasMore) {
+                    items.pop();
+                }
 
                 return new PaginationState(items, hasMore);
             });
