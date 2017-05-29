@@ -13,7 +13,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { CourseData, CoursesService, coursesServiceToken } from '../../../domain/courses';
 
 @Component({
-    selector: 'course-edit-page',
     templateUrl: './course-edit.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })

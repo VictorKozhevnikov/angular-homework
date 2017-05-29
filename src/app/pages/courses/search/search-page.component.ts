@@ -10,7 +10,6 @@ import { DeleteConfirmationComponent } from './delete-confirmation';
 import { Filters } from './filters';
 
 @Component({
-    selector: 'courses-search-page',
     template: require('./search-page.component.html')
 })
 export class SearchPageComponent implements OnInit, OnDestroy {

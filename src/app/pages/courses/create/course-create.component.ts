@@ -14,7 +14,6 @@ import {
 } from '../../../domain/courses';
 
 @Component({
-    selector: 'course-create-page',
     templateUrl: './course-create.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
