@@ -19,7 +19,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         text: ''
     };
 
-    @Output() public addCourseRequested = new EventEmitter<void>();
     @Output() public editCourseRequested = new EventEmitter<number>();
     public courses: Observable<Array<Course>> = null;
     public hasMore: Observable<boolean> = null;
@@ -66,10 +65,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     public ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
-    }
-
-    public addCourse() {
-        this.addCourseRequested.emit();
     }
 
     public editCourse(course: Course) {

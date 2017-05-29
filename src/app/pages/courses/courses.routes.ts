@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { CoursesComponent } from './courses.component';
 import { SearchPageComponent } from './search';
 import { CourseCreateComponent } from './create';
-import { CourseEditComponent } from './edit';
+import { courseEditRoute } from './edit';
 
 export const couresesRoutes: Routes = [
     {
@@ -20,11 +20,7 @@ export const couresesRoutes: Routes = [
                 path: 'new',
                 component: CourseCreateComponent,
             },
-            {
-                // edit
-                path: ':courseId',
-                component: CourseEditComponent
-            }
+            courseEditRoute
         ]
     }
 ];

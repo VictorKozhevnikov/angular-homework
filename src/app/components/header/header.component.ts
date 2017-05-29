@@ -3,10 +3,12 @@ import {
     Output,
     EventEmitter,
     OnInit,
+    OnDestroy,
     Inject,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs/Rx';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
 import { UsersService, usersServiceToken } from '../../domain/users';
@@ -19,15 +21,16 @@ import { UsersService, usersServiceToken } from '../../domain/users';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
     public userName: Observable<string>;
     public isAuthenticated: Observable<boolean>;
 
-    @Output() public logoutRequested = new EventEmitter();
+    private ngUnsubscribe = new Subject<void>();
 
     public constructor(
         @Inject(authServiceToken) private readonly authService: AuthService,
-        @Inject(usersServiceToken) private readonly usersService: UsersService
+        @Inject(usersServiceToken) private readonly usersService: UsersService,
+        private readonly router: Router
     ) { }
 
     public ngOnInit(): void {
@@ -43,8 +46,15 @@ export class HeaderComponent implements OnInit {
             .map(principal => !!principal);
     }
 
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
     private logout(): void {
-        this.logoutRequested.emit();
+        this.authService.logout()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => this.router.navigate(['/login']));
     }
 
 };

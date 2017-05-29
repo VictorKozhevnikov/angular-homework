@@ -1,54 +1,52 @@
 import {
     Component,
     Input,
-    Output,
-    EventEmitter,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     OnInit,
+    OnDestroy,
     Inject
 } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { Subject } from 'rxjs/Rx';
 
-import { CourseData, CoursesService, coursesServiceToken } from '../../../domain/courses';
+import { Course, CourseData, CoursesService, coursesServiceToken } from '../../../domain/courses';
 
 @Component({
     templateUrl: './course-edit.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseEditComponent implements OnInit {
-    @Input() public courseId: number;
-    @Output() public closed = new EventEmitter<void>();
-
+export class CourseEditComponent implements OnInit, OnDestroy {
     public readonly courseDataFormControl: FormControl;
+    private course: Course;
+    private readonly ngUnsubscribe = new Subject<void>();
 
     public constructor(
-        @Inject(coursesServiceToken)
-        private readonly coursesService: CoursesService
+        @Inject(coursesServiceToken) private readonly coursesService: CoursesService,
+        private readonly router: Router,
+        private readonly activatedRoute: ActivatedRoute
     ) {
         this.courseDataFormControl = new FormControl(null, Validators.required);
     }
 
     public ngOnInit(): void {
-        this.coursesService
-            .getCourse(this.courseId)
-            .first()
-            .subscribe(course => {
-                const courseData = course.extractCourseData();
-                this.courseDataFormControl.setValue(courseData);
-            });
+        this.course = this.activatedRoute.snapshot.data['course'];
+        const courseData = this.course.extractCourseData();
+        this.courseDataFormControl.setValue(courseData);
+    }
+
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     public save(courseData: CourseData): void {
         this.coursesService
-            .updateCourse(this.courseId, courseData)
-            .first()
-            .subscribe(()=>{
-                this.closed.emit();
+            .updateCourse(this.course.id, courseData)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                this.router.navigate(['../']);
             });
-    }
-
-    public cancel(): void {
-        this.closed.emit();
     }
 }
