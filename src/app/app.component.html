@@ -1,5 +1,7 @@
 <loading-block></loading-block>
 
+<router-outlet></router-outlet>
+
 <courses-header (logoutRequested)="logout()"></courses-header>
 
 <login *ngIf="currentPage === pages.login" (loginSucceeded)="loginSucceeded()"></login>

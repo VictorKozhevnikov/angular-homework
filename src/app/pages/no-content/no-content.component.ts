@@ -4,9 +4,9 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'no-content',
+  selector: '',
   template: `
-    <div>
+    <div class="jumbotron text-center">
       <h1>404: page missing</h1>
     </div>
   `,
