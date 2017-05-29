@@ -51,7 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    private logout(): void {
+    private logout($event: any): void {
+        $event.preventDefault();
         this.authService.logout()
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => this.router.navigate(['/login']));
