@@ -54,7 +54,6 @@ import { NoContentComponent } from './pages/no-content';
 
 // domain
 import { DomainModule } from './domain';
-
 import { LoadingBlockModule } from './components';
 
 // core
