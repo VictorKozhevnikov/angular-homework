@@ -4,7 +4,8 @@ import {
     Output,
     OnDestroy,
     EventEmitter,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    ChangeDetectorRef
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Rx';
@@ -25,7 +26,8 @@ export class LoginComponent implements OnDestroy {
 
     public constructor(
         @Inject(authServiceToken)
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly changeDetector: ChangeDetectorRef
     ) { }
 
     public ngOnDestroy(): void {
@@ -38,6 +40,7 @@ export class LoginComponent implements OnDestroy {
             .login(userName, password)
             .do(loginIsSuccessful => {
                 this.lastLoginFailed = !loginIsSuccessful;
+                this.changeDetector.markForCheck();
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe(loginIsSuccessful => {

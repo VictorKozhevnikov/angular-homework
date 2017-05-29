@@ -5,10 +5,11 @@ import {
     OnInit,
     Inject,
     ChangeDetectionStrategy,
-    ChangeDetectorRef
 } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 import { AuthService, authServiceToken } from '../../domain/auth';
+import { UsersService, usersServiceToken } from '../../domain/users';
 
 @Component({
     selector: 'courses-header',
@@ -19,32 +20,27 @@ import { AuthService, authServiceToken } from '../../domain/auth';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
-    public isAnonymous: boolean;
-    public isAuthenticated: boolean;
-    public userName: string;
+    public userName: Observable<string>;
+    public isAuthenticated: Observable<boolean>;
 
     @Output() public logoutRequested = new EventEmitter();
 
     public constructor(
-        @Inject(authServiceToken)
-        private readonly authService: AuthService,
-        private readonly changeDetector: ChangeDetectorRef
+        @Inject(authServiceToken) private readonly authService: AuthService,
+        @Inject(usersServiceToken) private readonly usersService: UsersService
     ) { }
 
     public ngOnInit(): void {
-        // first time get user info from service
-        this.isAuthenticated = this.authService.IsAuthenticated();
-        this.isAnonymous = !this.authService.IsAuthenticated();
-        this.userName = this.authService.GetUserInfo();
+        this.userName = this.authService.currentPrincipal
+            .switchMap(principal => principal
+                ? this.usersService.getUser(principal.userId)
+                : Observable.of(null))
+            .map(user => user
+                ? user.name
+                : 'Anonymous');
 
-        this.authService.userInfo.subscribe(userName => {
-            // other times get user info from observable
-            this.userName = userName;
-            this.isAuthenticated = userName !== null;
-            this.isAnonymous = userName == null;
-
-            this.changeDetector.markForCheck();
-        });
+        this.isAuthenticated = this.authService.currentPrincipal
+            .map(principal => !!principal);
     }
 
     private logout(): void {

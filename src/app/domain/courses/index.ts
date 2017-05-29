@@ -1,2 +1,2 @@
 export * from './contract';
-export * from './implementation/offline/offline-courses.module';
+export * from './implementation/http';
