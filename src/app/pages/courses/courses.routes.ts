@@ -12,16 +12,25 @@ export const couresesRoutes: Routes = [
         path: 'courses',
         component: CoursesComponent,
         canActivate: [AuthGuard],
+        data: {
+            breadcrumb: 'Courses'
+        },
         children: [
             {
                 // search
                 path: '',
-                component: SearchPageComponent
+                component: SearchPageComponent,
+                data: {
+                    breadcrumb: 'Search'
+                }
             },
             {
                 // create
                 path: 'new',
                 component: CourseCreateComponent,
+                data: {
+                    breadcrumb: 'Add course'
+                }
             },
             courseEditRoute
         ]
