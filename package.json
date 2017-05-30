@@ -85,6 +85,8 @@
     "@angularclass/hmr": "~1.2.2",
     "@angularclass/hmr-loader": "~3.0.2",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.22",
+    "@ngrx/core": "github:ngrx/core",
+    "@ngrx/store": "github:ngrx/store",
     "concurrently": "^3.4.0",
     "core-js": "^2.4.1",
     "http-server": "^0.9.0",
@@ -98,6 +100,7 @@
   },
   "devDependencies": {
     "@angular/compiler-cli": "2.4.6",
+    "@ngrx/store-devtools": "github:ngrx/store-devtools",
     "@types/hammerjs": "^2.0.33",
     "@types/jasmine": "^2.2.34",
     "@types/node": "^7.0.0",
