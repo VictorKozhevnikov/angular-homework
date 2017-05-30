@@ -49,4 +49,5 @@ export class CourseEditComponent implements OnInit, OnDestroy {
                 this.router.navigate(['../']);
             });
     }
+
 }
