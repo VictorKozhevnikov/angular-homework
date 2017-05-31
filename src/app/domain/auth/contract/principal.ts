@@ -1,4 +1,4 @@
-export interface Principal {
+ export interface Principal {
     login: string;
     userId: number;
 }

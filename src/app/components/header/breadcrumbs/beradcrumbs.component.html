@@ -1,0 +1,6 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item" *ngFor="let item of items | async; let isLast=last" >
+    <a [href]="item.href" *ngIf="!isLast" >{{item.title}}</a>
+    <span *ngIf="isLast">{{item.title}}</span>
+    </li>
+</ol>

@@ -1,11 +1,12 @@
 import {
     Component,
     ChangeDetectionStrategy,
-    Output,
-    EventEmitter,
-    Inject
+    Inject,
+    OnDestroy
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { Subject } from 'rxjs/Rx';
 
 import {
     CourseData,
@@ -14,34 +15,32 @@ import {
 } from '../../../domain/courses';
 
 @Component({
-    selector: 'course-create-page',
     templateUrl: './course-create.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseCreateComponent {
-    @Output() public closed = new EventEmitter<void>();
-
+export class CourseCreateComponent implements OnDestroy {
     public readonly courseDataFormControl: FormControl;
+    private readonly ngUnsubscribe = new Subject<void>();
 
     public constructor(
-        @Inject(coursesServiceToken)
-        private readonly coursesService: CoursesService
+        @Inject(coursesServiceToken) private readonly coursesService: CoursesService,
+        private readonly router: Router
     ) {
         this.courseDataFormControl = new FormControl(null, Validators.required);
+    }
+
+    public ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     public save(courseData: CourseData): void {
 
         this.coursesService
             .createCourse(courseData)
-            .first()
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
-                this.closed.emit();
+                this.router.navigate(['../']);
             });
     }
-
-    public cancel(): void {
-        this.closed.emit();
-    }
-
 };
